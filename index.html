@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首頁</title>
+    <link rel="stylesheet" href="./css/all.min.css">
+</head>
+
+<body>
+    <header class="container d-flex justify-content-between position-sticky top-0">
+        <h1>首頁</h1>
+        <ul>
+            <li><a href="cart.html" .html" class="d-block">結帳去 !</a></li>
+        </ul>
+    </header>
+
+    <section class="container-sm" id="vue-product-list">
+        <h2>產品</h2>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <ul class="row list-unstyled">
+                    <li class="col-md-4 col-lg-4 mb-3 p-3" v-for="(item, index) in productList" :key="index">
+
+                        <div class="card">
+                            <div class="card-hover">
+                                <img :src="item.imageUrl" class="card-img card-img-top" :alt="item.description">
+                                <div class="card-img-overlay card--hover d-flex justify-content-center align-items-center">
+                                    <h5 class="card-title text-center ">查看更多</h5>
+                                   
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="card-body">
+                                <h5 class="card-title"> {{item.title}}</h5>
+                                <p class="card-text">{{item.description}}</p>
+                                <p>原價 :<del> {{item.origin_price}}</del>/{{item.unit}}</p>
+                                <p>特價 : {{item.price}}/{{item.unit}}</p>
+                            </div>
+                            <div class="row">
+                                <div class="col-6"> <a href="#" class=" w-100 btn btn-primary stretcked-link">加入購物車</a></div>
+                             
+
+
+                            </div>
+                        </div>
+
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+
+
+
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"
+        integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./JS/vendors/bootstrap/bootstrap.bundle.min.js"></script>
+
+    <script src="./JS/index.js" type="module"></script>
+
+</body>
+
+</html>

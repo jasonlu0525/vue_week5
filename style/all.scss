@@ -1,0 +1,34 @@
+@import "./venders/bootstrap/bootstrap";
+
+.card-hover {
+    position: relative;
+
+    z-index: 999;
+  
+    cursor: pointer;
+    color: white;
+
+}
+
+.card--hover {
+    visibility: hidden;
+    transform: translatY(-50%) ;
+}
+
+.card--hover:hover {
+    transform: translatY(50%) ;
+    visibility: visible;
+
+    &::after {
+        content: '';
+        position: absolute;
+        
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: black;
+        opacity: .5;
+    }
+
+}
