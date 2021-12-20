@@ -1,10 +1,11 @@
 @import "./venders/bootstrap/bootstrap";
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css");
 
 .card-hover {
     position: relative;
 
     z-index: 999;
-  
+
     cursor: pointer;
     color: white;
 
@@ -12,17 +13,17 @@
 
 .card--hover {
     visibility: hidden;
-    transform: translatY(-50%) ;
+    transform: translatY(-50%);
 }
 
 .card--hover:hover {
-    transform: translatY(50%) ;
+    transform: translatY(50%);
     visibility: visible;
 
     &::after {
         content: '';
         position: absolute;
-        
+
         top: 0;
         left: 0;
         right: 0;
