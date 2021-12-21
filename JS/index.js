@@ -9,11 +9,11 @@ import {
     deletetAllCart
 } from "./api.esm.js";
 
-deletetAllCart().then((res)=>{
-console.log(res);
-}).catch((err)=>{
-    console.dir(err)
-})
+// deletetAllCart().then((res) => {
+//     console.log(res);
+// }).catch((err) => {
+//     console.dir(err)
+// })
 
 const productApp = createApp({
     data() {
@@ -34,7 +34,7 @@ const productApp = createApp({
             console.dir(err);
         })
 
-        // 取得購物車
+        // 取得購物車 
         getCart().then((result) => {
             this.cartsList = result.data.data
             console.log(result);
@@ -43,6 +43,7 @@ const productApp = createApp({
         })
     },
     methods: {
+        // 觸發換頁
         $on_changePages(pages) {
             console.log(pages);
             getProduct(pages).then((result) => {
@@ -54,7 +55,7 @@ const productApp = createApp({
                 console.dir(err);
             })
         },
-        // 加入購物車之後 更新 this.cartsList
+        // 加入購物車之後 更新 this.cartsList，並且把更新後的 this.cartsList 資料以 props 傳入 shopping-cart 元件
         $on_refreshShoppingCart(newData) {
             console.log(newData);
             getCart().then((result) => {
@@ -92,7 +93,7 @@ productApp.component('product-list', {
                 .then((res) => {
                     console.log(res);
 
-                    this.$emit('emit-refresh-carts'); // 加入購物車之後觸發 emit，傳到 ROOT 執行  $emit_refreshShoppingCart()
+                    this.$emit('emit-refresh-carts'); // 加入購物車之後觸發 emit，傳到 ROOT 執行  $on_refreshShoppingCart()
                     swal("感謝您 ", `${res.data.message}，目前購物車內已有 ${res.data.data.qty} 件該產品`, 'success')
                     console.log("成功加入購物車 !", res);
                 })
@@ -130,7 +131,19 @@ productApp.component('pagination', {
 // 購物車 offcanvas
 productApp.component('shopping-cart', {
     props: ['propShoppingCart'],
+    data() {
+        return {
+            finalTotal: 0
+        }
+    },
     template: "#shopping-cart",
+    watch: {
+        propShoppingCart() {
+            this.finalTotal = this.propShoppingCart.final_total
+
+
+        }
+    },
 })
 
 
