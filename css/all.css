@@ -11952,6 +11952,11 @@ fieldset:disabled .btn {
   }
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 .card-hover {
   position: relative;
   z-index: 999;

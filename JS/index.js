@@ -5,54 +5,60 @@ import {
 import {
     getProduct,
     getCart,
-    postCart
-} from "./axios.esm.js";
+    postCart,
+    deletetAllCart
+} from "./api.esm.js";
 
-
-console.log(axios.baseUrl);
-
-
-/*
-
-category:"2222"
-description:""
-id:"-MqdftLK5julnz4IKj1Z"
-imagesUrl:Array[2]
-is_enabled:1
-num:13
-origin_price:2222
-price:1
-title:"44444"
-unit:"11"
-
-
-*/
-
+deletetAllCart().then((res)=>{
+console.log(res);
+}).catch((err)=>{
+    console.dir(err)
+})
 
 const productApp = createApp({
     data() {
         return {
             productList: [],
-            pagination: []
+            pagination: [],
+            cartsList: []
         }
     },
     created() {
+        // 取得產品 ( 預設是取第一頁 )
         getProduct().then((result) => {
+            // 頁碼 物件
             this.pagination = result.data.pagination;
             this.productList = result.data.products
             console.log(result);
         }).catch((err) => {
             console.dir(err);
         })
+
+        // 取得購物車
+        getCart().then((result) => {
+            this.cartsList = result.data.data
+            console.log(result);
+        }).catch((err) => {
+            console.dir(err);
+        })
     },
     methods: {
-        $emit_changePages(pages) {
+        $on_changePages(pages) {
             console.log(pages);
             getProduct(pages).then((result) => {
 
-            console.log(result.data.pagination, result.data.products);
                 this.pagination = result.data.pagination;
                 this.productList = result.data.products
+                console.log(result);
+            }).catch((err) => {
+                console.dir(err);
+            })
+        },
+        // 加入購物車之後 更新 this.cartsList
+        $on_refreshShoppingCart(newData) {
+            console.log(newData);
+            getCart().then((result) => {
+                this.cartsList = result.data.data
                 console.log(result);
             }).catch((err) => {
                 console.dir(err);
@@ -75,8 +81,6 @@ productApp.component('product-list', {
     data() {
         return {
             productData: [],
-            qty: 0,
-            cartsObj: []
         }
     },
     methods: {
@@ -86,6 +90,9 @@ productApp.component('product-list', {
                     data: productObj
                 })
                 .then((res) => {
+                    console.log(res);
+
+                    this.$emit('emit-refresh-carts'); // 加入購物車之後觸發 emit，傳到 ROOT 執行  $emit_refreshShoppingCart()
                     swal("感謝您 ", `${res.data.message}，目前購物車內已有 ${res.data.data.qty} 件該產品`, 'success')
                     console.log("成功加入購物車 !", res);
                 })
@@ -98,19 +105,10 @@ productApp.component('product-list', {
         }
     },
     template: '#productList',
-    created() {
-        getCart()
-            .then((res) => {
-                this.cartsObj = res.data.data
-                console.log(res);
-            })
-            .catch((err) => {
-                console.dir(err);
-            })
-    },
+
     updated() {
         this.productData = [...this.propProductData]
-    
+
     }
 
 
@@ -124,10 +122,52 @@ productApp.component('pagination', {
 
         }
     },
-   
+
     template: "#pagination"
 
 });
 
+// 購物車 offcanvas
+productApp.component('shopping-cart', {
+    props: ['propShoppingCart'],
+    template: "#shopping-cart",
+})
+
 
 productApp.mount('#vue-product-list');
+
+// {
+//     "final_total": 5,
+//     "id": "-MrNH_9-5ElL2v1fImn8",
+//     "item": {
+//         "category": "1111",
+//         "content": "",
+//         "description": "",
+//         "id": "-MqwIZIVI7x4sz-JDjVY",
+//         "imageUrl": "https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80",
+//         "imagesUrl": ["https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80", "https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80", "https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80", "https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80"],
+//         "is_enabled": 1,
+//         "num": 1,
+//         "origin_price": 1,
+//         "price": 1,
+//         "title": "1111",
+//         "unit": "1"
+//     },
+//     "product": {
+//         "category": "1111",
+//         "content": "",
+//         "description": "",
+//         "id": "-MqwIZIVI7x4sz-JDjVY",
+//         "imageUrl": "https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80",
+//         "imagesUrl": ["https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80", "https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80", "https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80", "https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80"],
+//         "is_enabled": 1,
+//         "num": "",
+//         "origin_price": 1,
+//         "price": 1,
+//         "title": "1111",
+//         "unit": "1"
+//     },
+//     "product_id": "-MqwIZIVI7x4sz-JDjVY",
+//     "qty": 5,
+//     "total": 5
+// }

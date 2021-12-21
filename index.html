@@ -10,14 +10,6 @@
 </head>
 
 <body>
-    <header class="container d-flex justify-content-between position-sticky top-0">
-        <h1>首頁</h1>
-        <ul>
-            <li><a href="./cart.html" class="d-block">結帳去 ! <i class="bi bi-cart-fill"></i></a></li>
-        </ul>
-    </header>
-
-
     <script type="text/x-template" id="productList">
 
         <li class="col-md-6 col-lg-4  mb-3 p-3" v-for="(item, index) in productData" :key="index">
@@ -49,46 +41,85 @@
 
     <script type="text/x-template" id="pagination">
         <ul class="pagination     justify-content-end">
-        <li class="page-item " :class="{ disabled :!propPagination.has_pre }">
-          <a class="page-link">上一頁</a>
+        <li class="page-item " :class="{ disabled :!propPagination.has_pre }"
+         @click.prevent=" $emit('emit-change-page', propPagination.current_page-1)">
+          <a class="page-link" href="#" >上一頁</a>
         </li>
 
         <li class="page-item"
          :class="{ active : item===propPagination.current_page }"  
          v-for="(item, index) in  propPagination.total_pages" :key="item"
-         @click.prevent=" $emit('on-change-page', item)">
-            <a class="page-link" href="#"> {{item}} </a>
+         @click.prevent=" $emit('emit-change-page', item)">
+            <a class="page-link" href="#"  > {{item}} </a>
         </li>
     
-        <li class="page-item"   :class="{ disabled : !propPagination.has_next }">
+        <li class="page-item"   :class="{ disabled : !propPagination.has_next }"
+         @click.prevent=" $emit('emit-change-page', propPagination.current_page+1)">
           <a class="page-link" href="#">下一頁</a>
         </li>
       </ul>
 </script>
 
-    <section class="container-sm" id="vue-product-list">
-        <h2>產品</h2>
-
-        <div class="row justify-content-end">
-            <div class=" d-lg-none col-lg-2 d-xl-block">
-                種類
-            </div>
-
-            <div class="col-lg-10 mb-3">
-                <ul class="row list-unstyled">
-                    <product-list :prop-product-data="productList"></product-list>
-                </ul>
-                <pagination :prop-pagination="pagination" @on-change-page="$emit_changePages">
-                </pagination>
-            </div>
-
+    <script type="text/x-template" id="shopping-cart">
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="shpping-cart" aria-labelledby="offcanvasTopLabel">
+        <div class="offcanvas-header">
+          <h5 id="offcanvasTopLabel">購物車</h5>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
+        <div class="offcanvas-body">
+          <ul class="list-unstyled">
+
+            <li v-for="(item, index) in propShoppingCart.carts" :key="index" class="row">
+                <div class="col-4"> <img :src="item.product.imageUrl" alt="" ></div>
+                <div class="col-4"> {{item.product.title}} <br> {{item.product.final_total }}元 </div>
+                <div class="col-4"> <button type="button">-</button><span> {{item.qty}} </span><button type="button">+</button></div>
+
+               
+ 
+            </li>
+          </ul>
+        </div>
+      </div>
+</script>
+
+
+    <div id="vue-product-list">
+
+
+        <header class="container d-flex justify-content-between position-sticky top-0">
+            <h1>首頁</h1>
+            <ul>
+                <li><a href="#" class="d-block" data-bs-toggle="offcanvas" data-bs-target="#shpping-cart">購物車 <i
+                            class="bi bi-cart-fill"></i></a></li>
+            </ul>
+        </header>
 
 
 
+        <section class="container-sm" id="">
+            <h2>產品</h2>
 
-    </section>
+            <div class="row justify-content-end">
+                <div class=" d-lg-none col-lg-2 d-xl-block">
+                    種類
+                </div>
 
+                <div class="col-lg-10 mb-3">
+                    <ul class="row list-unstyled">
+                        <product-list :prop-product-data="productList" @emit-refresh-carts="$on_refreshShoppingCart">
+                        </product-list>
+                    </ul>
+                    <pagination :prop-pagination="pagination" @emit-change-page="$on_changePages">
+                    </pagination>
+                </div>
+
+            </div>
+
+
+
+            <shopping-cart :prop-shopping-cart="cartsList"></shopping-cart>
+        </section>
+    </div>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"
         integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw=="
