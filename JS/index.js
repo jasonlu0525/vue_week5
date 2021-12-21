@@ -3,11 +3,17 @@ import {
 } from './vendors/vue3/vue.esm-browser.js';
 
 import {
+    // 產品
     getProduct,
+    // 購物車
     getCart,
     postCart,
-    deletetAllCart
+    putCart,
+    deletetAllCart,
+    deletetCart
 } from "./api.esm.js";
+
+
 
 // deletetAllCart().then((res) => {
 //     console.log(res);
@@ -24,7 +30,11 @@ const productApp = createApp({
         }
     },
     created() {
+
+        //    this.$loading.show();
+
         // 取得產品 ( 預設是取第一頁 )
+        //  this.$loading.show();
         getProduct().then((result) => {
             // 頁碼 物件
             this.pagination = result.data.pagination;
@@ -64,17 +74,48 @@ const productApp = createApp({
             }).catch((err) => {
                 console.dir(err);
             })
+        },
+        // 修改購物車數量
+        $on_changeQty(qtyObj) {
+            console.log(qtyObj);
+            if (qtyObj.qty === 0) {
+                return
+            }
+            putCart(qtyObj.product_id, {
+                    "data": qtyObj
+                }).then((result) => {
+                    console.log(result);
+                    return getCart();
+
+                }).catch((err) => {
+                    console.dir(err);
+                })
+                .then((result) => {
+                    this.cartsList = result.data.data
+                })
+        },
+        // 刪除單筆資料
+        $on_deleteCart(deleteMsg) {
+            console.log(deleteMsg.id);
+            deletetCart(deleteMsg.id)
+                .then((res) => {
+                    swal("成功!",`已刪除產品${deleteMsg.title}`,"success")
+                    console.log(res);
+                    return getCart();
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+                .then((result) => {
+                    this.cartsList = result.data.data
+                })
+
         }
-    },
 
+    }
 })
-// pagination:Object
-// category:""
-// current_page:1
-// has_next:true
-// has_pre:false
-// total_pages:2
-
+// console.log(VueLoading);
+// productApp.use(VueLoading)
 
 // 購物清單
 productApp.component('product-list', {
@@ -107,10 +148,16 @@ productApp.component('product-list', {
     },
     template: '#productList',
 
-    updated() {
-        this.productData = [...this.propProductData]
+    watch: {
+        propProductData() {
+            this.productData = [...this.propProductData]
+        }
+    },
 
-    }
+    // updated() {
+    //     this.productData = [...this.propProductData]
+
+    // }
 
 
 })
@@ -140,47 +187,13 @@ productApp.component('shopping-cart', {
     watch: {
         propShoppingCart() {
             this.finalTotal = this.propShoppingCart.final_total
-
-
         }
     },
+    // updated() {
+    //     this.finalTotal = this.propShoppingCart.final_total
+    // },
 })
 
 
-productApp.mount('#vue-product-list');
 
-// {
-//     "final_total": 5,
-//     "id": "-MrNH_9-5ElL2v1fImn8",
-//     "item": {
-//         "category": "1111",
-//         "content": "",
-//         "description": "",
-//         "id": "-MqwIZIVI7x4sz-JDjVY",
-//         "imageUrl": "https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80",
-//         "imagesUrl": ["https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80", "https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80", "https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80", "https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80"],
-//         "is_enabled": 1,
-//         "num": 1,
-//         "origin_price": 1,
-//         "price": 1,
-//         "title": "1111",
-//         "unit": "1"
-//     },
-//     "product": {
-//         "category": "1111",
-//         "content": "",
-//         "description": "",
-//         "id": "-MqwIZIVI7x4sz-JDjVY",
-//         "imageUrl": "https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80",
-//         "imagesUrl": ["https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80", "https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80", "https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80", "https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80"],
-//         "is_enabled": 1,
-//         "num": "",
-//         "origin_price": 1,
-//         "price": 1,
-//         "title": "1111",
-//         "unit": "1"
-//     },
-//     "product_id": "-MqwIZIVI7x4sz-JDjVY",
-//     "qty": 5,
-//     "total": 5
-// }
+productApp.mount('#vue-product-list');

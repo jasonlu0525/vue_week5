@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>首頁</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@4.0.2/dist/vue-loading.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@4.0.2/dist/vue-loading.min.js"></script>
     <link rel="stylesheet" href="./css/all.min.css">
 </head>
 
@@ -27,8 +29,8 @@
             <div class="card-body">
                 <h5 class="card-title"> {{item.title}}</h5>
                 <p class="card-text">{{item.description}}</p>
-                <p>原價 :<del> {{item.origin_price}}</del>/{{item.unit}}</p>
-                <p>特價 : {{item.price}}/{{item.unit}}</p>
+                <p>原價 :<del> {{item.origin_price.toLocaleString()}}元</del>/{{item.unit}}</p>
+                <p>特價 : {{item.price.toLocaleString()}}元/{{item.unit}}</p>
             </div>
             <div class="row">
                 <div class="col-6"> <a href="#" class=" w-100 btn btn-primary stretcked-link" @click.prevent="addToCart( { product_id :item.id,qty:1,item})">加入購物車</a></div>
@@ -62,31 +64,39 @@
 
     <script type="text/x-template" id="shopping-cart">
         <div class="offcanvas offcanvas-end" tabindex="-1" id="shpping-cart" aria-labelledby="offcanvasTopLabel">
-        <div class="offcanvas-header">
-          <h3 id="offcanvasTopLabel">購物車</h3>
-          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <div class="offcanvas-header align-items-center bg-dark text-white">
+          <h3 class="mb-0" id="offcanvasTopLabel ">購物車</h3>
+          <button type="button" class="btn-close text-reset bg-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <div class="offcanvas-body d-flex flex-column justify-content-between">
+        <div class="offcanvas-body d-flex flex-column justify-content-between off-canvas-scrollbar">
          
                 <ul class="list-unstyled mb-0">
 
-                    <li v-for="(item, index) in propShoppingCart.carts" :key="index" class="row mb-3">
-                        <div class="col-6"> <img :src="item.product.imageUrl" alt="" ></div>
-                        <div class="col-6 d-flex flex-column justify-content-between"> 
+                    <li v-for="(item, index) in propShoppingCart.carts" :key="index" class="row mb-3 align-items-center text-dark">
+                        <div class="col-5"> <img :src="item.product.imageUrl" alt="" ></div>
+                        <div class="col-5 d-flex flex-column justify-content-between"> 
                             <h4>{{item.product.title}} </h4>
         
-                            <div class="fs-1 d-flex align-items-center" ><a href="#" class="pe-2 "><i class="bi bi-dash"></i></a><span> {{item.qty}}件</span><a href="#" class="px-2 "><i class="bi bi-plus"></i></a></div>
-                         
+                            <div class="fs-1 d-flex justify-content-center align-items-center" >
+                                <a href="#" class="pe-2"   @click="$emit('emit-changeQty', {qty: item.qty-1,product_id:item.id})">
+                                    <i class="bi bi-dash"></i>
+                                </a>
+                                <span class="px-2"> {{item.qty}}</span>
+                                <a href="#" class="ps-2" @click="$emit('emit-changeQty', {qty: item.qty+1,product_id:item.id})" >
+                                    <i class="bi bi-plus"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <a href="#" class="col-2 text-center"  @click="$emit('emit-deleteCart',{ id :item.id ,title:item.product.title  })" title="確定要刪掉嗎 QQ"><i class="bi bi-trash-fill fs-4 link"></i></a>
                     </li>
                   </ul>
-                  <p style="
-                  position: absolute;
-                  bottom: 0;
-                  right: 0;
-                  left: 0;
-                  margin: 0;
-                  background: white;
-              "> {{finalTotal}}元 </p>    
+                  
+                  <section class="position-absolute start-0 end-0 bottom-0 mb-0 bg-white px-3 py-4" >
+                    <h3 class="fw-bold mb-3">總計: {{finalTotal.toLocaleString()}}元 </h3>  
+
+                    <a class="btn btn-dark w-100" href="./cart.html">前往購物車</a>
+                  </section>
+                    
    </div>
 
                         
@@ -107,7 +117,7 @@
 
 
 
-        <section class="container-sm" id="">
+        <section class="container">
             <h2>產品</h2>
 
             <div class="row justify-content-end">
@@ -128,9 +138,14 @@
 
 
 
-            <shopping-cart :prop-shopping-cart="cartsList"></shopping-cart>
+            <shopping-cart :prop-shopping-cart="cartsList" @emit-change-qty="$on_changeQty"
+                @emit-delete-cart="$on_deleteCart"></shopping-cart>
         </section>
     </div>
+
+
+
+
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"
         integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw=="
