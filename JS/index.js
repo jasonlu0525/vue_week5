@@ -115,7 +115,7 @@ const productApp = createApp({
     }
 })
  console.log(VueLoading);
-// productApp.use(VueLoading)
+//productApp.use(VueLoading)
 
 // 購物清單
 productApp.component('product-list', {
