@@ -8687,6 +8687,14 @@ fieldset:disabled .btn {
   font-weight: bolder !important;
 }
 
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed !important;
+}
+
 .lh-1 {
   line-height: 1 !important;
 }

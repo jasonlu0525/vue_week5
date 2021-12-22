@@ -14,12 +14,19 @@ import {
 } from "./api.esm.js";
 
 
+import {
 
-// deletetAllCart().then((res) => {
-//     console.log(res);
-// }).catch((err) => {
-//     console.dir(err)
-// })
+    cartComponent,
+
+
+} from "./component.esm.js"
+
+
+deletetAllCart().then((res) => {
+    console.log(res);
+}).catch((err) => {
+    console.dir(err)
+})
 
 const productApp = createApp({
     data() {
@@ -84,7 +91,8 @@ const productApp = createApp({
             putCart(qtyObj.product_id, {
                     "data": qtyObj
                 }).then((result) => {
-                    console.log(result);
+                    swal('成功修改數量 !', `已將該數量改成  ${result.data.data.qty} `, `${result.data.success ? 'success' :　''}`)
+
                     return getCart();
 
                 }).catch((err) => {
@@ -95,11 +103,12 @@ const productApp = createApp({
                 })
         },
         // 刪除單筆資料
+
         $on_deleteCart(deleteMsg) {
             console.log(deleteMsg.id);
             deletetCart(deleteMsg.id)
                 .then((res) => {
-                    swal("成功!",`已刪除產品${deleteMsg.title}`,"success")
+                    swal("成功!", `已刪除產品${deleteMsg.title}`, "success")
                     console.log(res);
                     return getCart();
                 })
@@ -114,7 +123,7 @@ const productApp = createApp({
 
     }
 })
- console.log(VueLoading);
+//  console.log(VueLoading);
 //productApp.use(VueLoading)
 
 // 購物清單
@@ -176,23 +185,7 @@ productApp.component('pagination', {
 });
 
 // 購物車 offcanvas
-productApp.component('shopping-cart', {
-    props: ['propShoppingCart'],
-    data() {
-        return {
-            finalTotal: 0
-        }
-    },
-    template: "#shopping-cart",
-    watch: {
-        propShoppingCart() {
-            this.finalTotal = this.propShoppingCart.final_total
-        }
-    },
-    // updated() {
-    //     this.finalTotal = this.propShoppingCart.final_total
-    // },
-})
+productApp.component('shopping-cart', cartComponent)
 
 
 

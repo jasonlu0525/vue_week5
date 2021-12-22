@@ -1,12 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@4.0.2/dist/vue-loading.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@4.0.2/dist/vue-loading.min.js"></script>
+    <link rel="stylesheet" href="./css/all.min.css">
     <title>Document</title>
 </head>
-<body>
-    結帳
+
+
+
+
+
+<div class="container" id="vue-shpopping-cart">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-10 mb-4">
+            <h1 class="text-center mb-3">我的購物車</h1>
+            <div class="table-responsive">
+                <table class="table  table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">品項</th>
+                            <th scope="col">單價</th>
+                            <th scope="col">數量</th>
+                            <th scope="col" colspan="2">金額</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-is="'cart-table'" :prop-shopping-cart="cartList"></tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div id="totalPrice" class="">總計 -</div>
+        </div>
+        <div class="col-md-6">
+
+        </div>
+    </div>
+
+
+
+
+</div>
+
+<script type="text/x-template" id="shopping-cart">
+
+    <tr v-for="(item, index) in propShoppingCart.carts" :key="index">
+        <td scope="row" class="col-4">
+            <div class="d-flex align-items-center">
+                <img   class="col-6" :src="item.product.imageUrl" alt="">
+                <h3 class="fs-4 mb-0">{{item.product.title}}</h3>
+            </div>
+       
+        </td>
+        
+        <td class="col-4"> 
+            <div class="btn-group" role="group" aria-label="Basic outlined example">
+                <button type="button" class="btn btn-outline-primary">Left</button>
+                <input type="number" readinly :value="item.final_total" >
+                <button type="button" class="btn btn-outline-primary">Right</button>
+              </div> 
+        </td>
+        <td> {{item.final_total}} </td>
+        <td></td>
+        </tr>
+         <!-- <teleport to='#totalPrice'> {{finalTotal}}</teleport>  -->
+      
+</script>
+
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"
+    integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="./JS/vendors/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="./JS/cart.js" type="module"></script>
 </body>
+
 </html>

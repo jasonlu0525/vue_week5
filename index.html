@@ -78,13 +78,13 @@
                             <h4>{{item.product.title}} </h4>
         
                             <div class="fs-1 d-flex justify-content-center align-items-center" >
-                                <a href="#" class="pe-2"   @click="$emit('emit-changeQty', {qty: item.qty-1,product_id:item.id})">
+                                <span  class="d-block pe-2 | cursor-pointer" :class="{ 'cursor-not-allowed' : item.qty-1 == 0 }"   @click="$emit('emit-changeQty', {qty: item.qty-1,product_id:item.id})">
                                     <i class="bi bi-dash"></i>
-                                </a>
+                                </span>
                                 <span class="px-2"> {{item.qty}}</span>
-                                <a href="#" class="ps-2" @click="$emit('emit-changeQty', {qty: item.qty+1,product_id:item.id})" >
+                                <span  class="d-block ps-2 | cursor-pointer" @click="$emit('emit-changeQty', {qty: item.qty+1,product_id:item.id})" >
                                     <i class="bi bi-plus"></i>
-                                </a>
+                                </span>
                             </div>
                         </div>
                         <a href="#" class="col-2 text-center"  @click="$emit('emit-deleteCart',{ id :item.id ,title:item.product.title  })" title="確定要刪掉嗎 QQ"><i class="bi bi-trash-fill fs-4 link"></i></a>

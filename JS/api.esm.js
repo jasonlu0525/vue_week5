@@ -45,10 +45,6 @@ cartRequest.interceptors.response.use(function (response) {
 
 
 
-
-
-
-
 export {
     // 產品
     getProduct,
