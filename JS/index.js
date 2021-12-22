@@ -2,6 +2,9 @@ import {
     createApp
 } from './vendors/vue3/vue.esm-browser.js';
 
+
+import '../node_modules/vue-loading-overlay/dist/vue-loading.js';
+
 import {
     // 產品
     getProduct,
@@ -17,31 +20,36 @@ import {
 import {
 
     cartComponent,
-
-
+    $on_deleteCart,
+    $on_changeQty
 } from "./component.esm.js"
 
 
-deletetAllCart().then((res) => {
-    console.log(res);
-}).catch((err) => {
-    console.dir(err)
-})
+// deletetAllCart().then((res) => {
+//     console.log(res);
+// }).catch((err) => {
+//     console.dir(err)
+// })
+
+
+
 
 const productApp = createApp({
     data() {
         return {
+            vm: this,
             productList: [],
             pagination: [],
-            cartsList: []
+            cartsList: [],
+
         }
     },
-    created() {
 
+    created() {
+            console.log(VueLoading);
         //    this.$loading.show();
 
         // 取得產品 ( 預設是取第一頁 )
-        //  this.$loading.show();
         getProduct().then((result) => {
             // 頁碼 物件
             this.pagination = result.data.pagination;
@@ -60,6 +68,7 @@ const productApp = createApp({
         })
     },
     methods: {
+
         // 觸發換頁
         $on_changePages(pages) {
             console.log(pages);
@@ -83,54 +92,40 @@ const productApp = createApp({
             })
         },
         // 修改購物車數量
-        $on_changeQty(qtyObj) {
-            console.log(qtyObj);
-            if (qtyObj.qty === 0) {
-                return
-            }
-            putCart(qtyObj.product_id, {
-                    "data": qtyObj
-                }).then((result) => {
-                    swal('成功修改數量 !', `已將該數量改成  ${result.data.data.qty} `, `${result.data.success ? 'success' :　''}`)
+        $on_changeQty,
+        // $on_changeQty(qtyObj) {
+        //     console.log(qtyObj);
+        //     if (qtyObj.qty === 0) {
+        //         return
+        //     }
+        //     putCart(qtyObj.product_id, {
+        //             "data": qtyObj
+        //         }).then((result) => {
+        //             swal('成功修改數量 !', `已將該數量改成  ${result.data.data.qty} `, `${result.data.success ? 'success' :　''}`)
 
-                    return getCart();
+        //             return getCart();
 
-                }).catch((err) => {
-                    console.dir(err);
-                })
-                .then((result) => {
-                    this.cartsList = result.data.data
-                })
-        },
-        // 刪除單筆資料
-
-        $on_deleteCart(deleteMsg) {
-            console.log(deleteMsg.id);
-            deletetCart(deleteMsg.id)
-                .then((res) => {
-                    swal("成功!", `已刪除產品${deleteMsg.title}`, "success")
-                    console.log(res);
-                    return getCart();
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-                .then((result) => {
-                    this.cartsList = result.data.data
-                })
-
-        }
+        //         }).catch((err) => {
+        //             console.dir(err);
+        //         })
+        //         .then((result) => {
+        //             this.cartsList = result.data.data
+        //         })
+        // },
+        // 刪除單筆資料 (外部引入模組)
+        $on_deleteCart,
 
     }
 })
-//  console.log(VueLoading);
-//productApp.use(VueLoading)
+
+
 
 // 購物清單
 productApp.component('product-list', {
     props: ['propProductData'],
     data() {
         return {
+
             productData: [],
         }
     },
@@ -190,3 +185,5 @@ productApp.component('shopping-cart', cartComponent)
 
 
 productApp.mount('#vue-product-list');
+
+console.log(VueLoading);

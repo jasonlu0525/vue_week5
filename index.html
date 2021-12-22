@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>首頁</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@4.0.2/dist/vue-loading.css">
-    <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@4.0.2/dist/vue-loading.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@4.0.2/dist/vue-loading.min.js"></script> -->
     <link rel="stylesheet" href="./css/all.min.css">
 </head>
 
@@ -78,16 +78,18 @@
                             <h4>{{item.product.title}} </h4>
         
                             <div class="fs-1 d-flex justify-content-center align-items-center" >
-                                <span  class="d-block pe-2 | cursor-pointer" :class="{ 'cursor-not-allowed' : item.qty-1 == 0 }"   @click="$emit('emit-changeQty', {qty: item.qty-1,product_id:item.id})">
+                                <span  class="d-block pe-2 | cursor-pointer" :class="{ 'cursor-not-allowed' : item.qty-1 == 0 }"   
+                                @click="$emit('emit-changeQty',   { parent:parent ,data: { qty: item.qty-1,product_id:item.id}})">
                                     <i class="bi bi-dash"></i>
                                 </span>
                                 <span class="px-2"> {{item.qty}}</span>
-                                <span  class="d-block ps-2 | cursor-pointer" @click="$emit('emit-changeQty', {qty: item.qty+1,product_id:item.id})" >
+                                <span  class="d-block ps-2 | cursor-pointer" @click="$emit('emit-changeQty', { parent:parent ,data: { qty: item.qty+1,product_id:item.id}})" >
                                     <i class="bi bi-plus"></i>
                                 </span>
                             </div>
                         </div>
-                        <a href="#" class="col-2 text-center"  @click="$emit('emit-deleteCart',{ id :item.id ,title:item.product.title  })" title="確定要刪掉嗎 QQ"><i class="bi bi-trash-fill fs-4 link"></i></a>
+                        <a href="#" class="col-2 text-center" 
+                         @click="$emit('emit-deleteCart',{ parent:parent ,data:{id :item.id ,title:item.product.title }})" title="確定要刪掉嗎 QQ"><i class="bi bi-trash-fill fs-4 link"></i></a>
                     </li>
                   </ul>
                   

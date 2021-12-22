@@ -12,89 +12,76 @@ import {
 } from "./api.esm.js"
 
 import {
-    cartComponent
+    cartComponent,
+
+    // 刪除模組，用來接收 emit 事件
+    $on_deleteCart,
+    $on_changeQty
 } from "./component.esm.js"
+
+
+Object.keys(VeeValidateRules).forEach(rule => {
+    if (rule !== 'default') {
+      VeeValidate.defineRule(rule, VeeValidateRules[rule]);
+    }
+  });
+
+  VeeValidateI18n.loadLocaleFromURL('./zh_TW.json');
+
+  // Activate the locale
+  VeeValidate.configure({
+    generateMessage: VeeValidateI18n.localize('zh_TW'),
+    validateOnInput: true, // 調整為輸入字元立即進行驗證
+  });
 
 
 const cartApp = createApp({
 
     data() {
         return {
-            cartList: {}
+            vm: this,
+
+            cartsList: [],
         }
     },
     created() {
         getCart()
             .then((result) => {
 
-                this.cartList = result.data.data;
+                this.cartsList = result.data.data;
 
-                console.log(this.cartList);
+                console.log(this.cartLists);
 
             }).catch((err) => {
                 console.dir(err)
             });
 
-
+    },
+    methods: {
+        $on_deleteCart,
+        $on_changeQty
     },
 
 })
 
+cartApp.component('VForm', VeeValidate.Form);
+cartApp.component('VField', VeeValidate.Field);
+cartApp.component('ErrorMessage', VeeValidate.ErrorMessage);
+
+
 cartApp.component('cart-table', cartComponent)
 
+cartApp.component('shopping-car-submit-form', {
+    data() {
+        return {
+            errors:''
+        }
+    },
+    template:'#shopping-car-submit-form',
 
-// cartApp.component('cart-table', {
-//     props: ['propCartData'],
-//     template: "#cart-table",
-//     data() {
-//         return {
-//             cartData: {}
-//         }
-//     },
-//     watch: {
-//         propCartData() {
-//             this.cartData = {
-//                 ...this.propCartData
-//             }
-//         },
-//     }
-// })
+})
+
+
+
 
 cartApp.mount("#vue-shpopping-cart");
-
-
-// {
-//     "final_total": 1000,
-//     "id": "-MrVBmPEN1qbFpJunFlX",
-//     "item": {
-//         "category": "測試分類",
-//         "content": "測試的說明",
-//         "description": "測試的描述",
-//         "id": "-MqiYjhik4spWUVuMLqS",
-//         "imageUrl": "https://images.unsplash.com/photo-1516550135131-fe3dcb0bedc7?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=621e8231a4e714c2e85f5acbbcc6a730&auto=format&fit=crop&w=1352&q=80",
-//         "imagesUrl": ["https://images.unsplash.com/photo-1587300003388-59208cc962cb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", "https://images.unsplash.com/photo-1517331156700-3c241d2b4d83?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1948&q=80", "https://images.unsplash.com/photo-1617093727343-374698b1b08d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"],
-//         "is_enabled": 1,
-//         "num": 6,
-//         "origin_price": 1000,
-//         "price": 500,
-//         "title": "測試的產品1",
-//         "unit": "單位"
-//     },
-//     "product": {
-//         "category": "測試分類",
-//         "content": "測試的說明",
-//         "description": "測試的描述",
-//         "id": "-MqiYjhik4spWUVuMLqS",
-//         "imageUrl": "https://images.unsplash.com/photo-1516550135131-fe3dcb0bedc7?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=621e8231a4e714c2e85f5acbbcc6a730&auto=format&fit=crop&w=1352&q=80",
-//         "imagesUrl": ["https://images.unsplash.com/photo-1587300003388-59208cc962cb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", "https://images.unsplash.com/photo-1517331156700-3c241d2b4d83?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1948&q=80", "https://images.unsplash.com/photo-1617093727343-374698b1b08d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"],
-//         "is_enabled": 1,
-//         "num": 5,
-//         "origin_price": 1000,
-//         "price": 500,
-//         "title": "測試的產品1",
-//         "unit": "單位"
-//     },
-//     "product_id": "-MrVBmPEN1qbFpJunFlX",
-//     "qty": 2,
-//     "total": 1000
-// }
