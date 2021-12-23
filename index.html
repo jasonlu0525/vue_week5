@@ -6,12 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>首頁</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@4.0.2/dist/vue-loading.css">
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@4.0.2/dist/vue-loading.min.js"></script> -->
+    <link href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@5/dist/vue-loading.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/all.min.css">
 </head>
 
 <body>
+
+
+
     <script type="text/x-template" id="productList">
 
         <li class="col-md-6 col-lg-4  mb-3 p-3" v-for="(item, index) in productData" :key="index">
@@ -147,6 +149,13 @@
 
 
 
+
+    
+
+    <script src="https://unpkg.com/vue@3.2.26/dist/vue.global.js"></script>
+    <!-- Lastly add this package -->
+    <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@5"></script>
+    
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"

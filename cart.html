@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@4.0.2/dist/vue-loading.css">
-    <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@4.0.2/dist/vue-loading.min.js"></script>
+
     <link rel="stylesheet" href="./css/all.min.css">
     <title>Document</title>
 </head>
@@ -85,7 +86,7 @@
 </script>
 
 <script type="text/x-template" id="shopping-car-submit-form">
-    <v-form ref="form" class="col-md-6" v-slot="{ errors }" >
+    <v-form ref="form" class="" v-slot="{ errors }" >
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
           <v-field id="email" name="email" type="email" class="form-control"
@@ -125,16 +126,22 @@
         </div>
       </v-form>
 </script>
+<script src="https://unpkg.com/vue@3.2.26/dist/vue.global.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/4.1.17/vee-validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@vee-validate/i18n@4.1.17/dist/vee-validate-i18n.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@vee-validate/rules@4.1.17/dist/vee-validate-rules.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@5"></script>
+
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"
     integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
 <script src="./JS/vendors/bootstrap/bootstrap.bundle.min.js"></script>
+
 <script src="./JS/cart.js" type="module"></script>
 </body>
 

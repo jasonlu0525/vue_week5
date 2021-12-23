@@ -3,8 +3,6 @@ import {
 } from './vendors/vue3/vue.esm-browser.js';
 
 
-import '../node_modules/vue-loading-overlay/dist/vue-loading.js';
-
 import {
     // 產品
     getProduct,
@@ -18,18 +16,11 @@ import {
 
 
 import {
-
+    vue_loading_overlay,
     cartComponent,
     $on_deleteCart,
     $on_changeQty
 } from "./component.esm.js"
-
-
-// deletetAllCart().then((res) => {
-//     console.log(res);
-// }).catch((err) => {
-//     console.dir(err)
-// })
 
 
 
@@ -37,7 +28,6 @@ import {
 const productApp = createApp({
     data() {
         return {
-            vm: this,
             productList: [],
             pagination: [],
             cartsList: [],
@@ -46,12 +36,14 @@ const productApp = createApp({
     },
 
     created() {
-            console.log(VueLoading);
-        //    this.$loading.show();
+       
+        console.log(VueLoading);
+         const loader=   this.$loading.show();
 
         // 取得產品 ( 預設是取第一頁 )
         getProduct().then((result) => {
             // 頁碼 物件
+            loader.hide();
             this.pagination = result.data.pagination;
             this.productList = result.data.products
             console.log(result);
@@ -120,6 +112,9 @@ const productApp = createApp({
 
 
 
+
+
+
 // 購物清單
 productApp.component('product-list', {
     props: ['propProductData'],
@@ -182,7 +177,8 @@ productApp.component('pagination', {
 // 購物車 offcanvas
 productApp.component('shopping-cart', cartComponent)
 
-
+// 啟用 vue-loading-overlay 套件
+productApp.use(vue_loading_overlay);
 
 productApp.mount('#vue-product-list');
 

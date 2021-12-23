@@ -12,6 +12,7 @@ import {
 } from "./api.esm.js"
 
 import {
+    vue_loading_overlay,
     cartComponent,
 
     // 刪除模組，用來接收 emit 事件
@@ -20,20 +21,21 @@ import {
 } from "./component.esm.js"
 
 
+
 Object.keys(VeeValidateRules).forEach(rule => {
     if (rule !== 'default') {
-      VeeValidate.defineRule(rule, VeeValidateRules[rule]);
+        VeeValidate.defineRule(rule, VeeValidateRules[rule]);
     }
-  });
+});
 
-  VeeValidateI18n.loadLocaleFromURL('./zh_TW.json');
 
-  // Activate the locale
-  VeeValidate.configure({
+VeeValidateI18n.loadLocaleFromURL('./zh_TW.json');
+
+// Activate the locale
+VeeValidate.configure({
     generateMessage: VeeValidateI18n.localize('zh_TW'),
     validateOnInput: true, // 調整為輸入字元立即進行驗證
-  });
-
+});
 
 const cartApp = createApp({
 
@@ -45,6 +47,7 @@ const cartApp = createApp({
         }
     },
     created() {
+        console.log(VueLoading);
         getCart()
             .then((result) => {
 
@@ -64,6 +67,7 @@ const cartApp = createApp({
 
 })
 
+cartApp.use(vue_loading_overlay);
 cartApp.component('VForm', VeeValidate.Form);
 cartApp.component('VField', VeeValidate.Field);
 cartApp.component('ErrorMessage', VeeValidate.ErrorMessage);
@@ -74,10 +78,10 @@ cartApp.component('cart-table', cartComponent)
 cartApp.component('shopping-car-submit-form', {
     data() {
         return {
-            errors:''
+            errors: ''
         }
     },
-    template:'#shopping-car-submit-form',
+    template: '#shopping-car-submit-form',
 
 })
 

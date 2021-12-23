@@ -7,8 +7,9 @@ import {
 } from "./api.esm.js"
 
 
+//啟用 vue-loading-overlay
 
-
+const  vue_loading_overlay = VueLoading.Plugin;
 
 
 // 購物車模組，在 cart.html、index.html 皆會使用到
@@ -26,6 +27,9 @@ const cartComponent = {
             this.finalTotal = this.propShoppingCart.final_total
         }
     },
+    created() {
+
+    },
 
 }
 
@@ -33,8 +37,11 @@ const cartComponent = {
 const $on_deleteCart = (deleteMsg, a) => {
     console.log(deleteMsg.data.id);
     console.log(a);
+   const loader= deleteMsg.parent.$loading.show();
+ 
     deletetCart(deleteMsg.data.id)
         .then((res) => {
+            loader.hide();
             swal("成功!", `已刪除產品${deleteMsg.data.title}`, "success")
             console.log(res);
             return getCart();
@@ -55,9 +62,12 @@ const $on_changeQty = (qtyObj) => {
         swal('發生錯誤 !', '不能將數字改為 0 ', 'error');
         return;
     }
+    console.log(qtyObj.parent.$loading);
+    const loader= qtyObj.parent.$loading.show();
     putCart(qtyObj.data.product_id, {
             "data": qtyObj.data
         }).then((result) => {
+            loader.hide()
             swal('成功修改數量 !', `已將該數量改成  ${result.data.data.qty} `, `${result.data.success ? 'success' :''}`)
 
             return getCart();
@@ -74,6 +84,8 @@ const $on_changeQty = (qtyObj) => {
 
 
 export {
+    //啟用 vue-loading-overlay 
+    vue_loading_overlay,
 
     cartComponent,
 
