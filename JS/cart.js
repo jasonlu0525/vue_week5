@@ -21,7 +21,6 @@ import {
 } from "./component.esm.js"
 
 
-
 Object.keys(VeeValidateRules).forEach(rule => {
     if (rule !== 'default') {
         VeeValidate.defineRule(rule, VeeValidateRules[rule]);
@@ -42,7 +41,11 @@ const cartApp = createApp({
     data() {
         return {
             vm: this,
+            // errors: [], 
+            user: {
 
+
+            },
             cartsList: [],
         }
     },
@@ -62,10 +65,19 @@ const cartApp = createApp({
     },
     methods: {
         $on_deleteCart,
-        $on_changeQty
+        $on_changeQty,
+        onSubmit() {
+            console.log('表單送出');
+        },
+        isPhone(value) {
+            const phoneNumber = /^(09)[0-9]{8}$/
+            return phoneNumber.test(value) ? true : '需要正確的電話號碼'
+        }
     },
 
-})
+
+});
+
 
 cartApp.use(vue_loading_overlay);
 cartApp.component('VForm', VeeValidate.Form);
@@ -75,17 +87,46 @@ cartApp.component('ErrorMessage', VeeValidate.ErrorMessage);
 
 cartApp.component('cart-table', cartComponent)
 
-cartApp.component('shopping-car-submit-form', {
-    data() {
-        return {
-            errors: ''
-        }
-    },
-    template: '#shopping-car-submit-form',
+// cartApp.component('shopping-car-submit-form', {
+//     data() {
+//         return {
 
-})
+//             errors: {}
+
+//         }
+//     },
+//     template: '#shopping-car-submit-form',
+
+// })
 
 
 
 
 cartApp.mount("#vue-shpopping-cart");
+
+
+
+// const app = Vue.createApp({
+//     data() {
+//       return {
+//         user: {
+
+//         }
+//       }
+//     },
+//     methods: {
+//       onSubmit() {
+//         console.log('表單送出');
+//       },
+//       isPhone(value) {
+//         const phoneNumber = /^(09)[0-9]{8}$/
+//         return phoneNumber.test(value) ? true : '需要正確的電話號碼'
+//       }
+//     }
+//   });
+
+//   app.component('VForm', VeeValidate.Form);
+//   app.component('VField', VeeValidate.Field);
+//   app.component('ErrorMessage', VeeValidate.ErrorMessage);
+
+//   app.mount('#app')

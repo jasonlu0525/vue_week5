@@ -182,4 +182,3 @@ productApp.use(vue_loading_overlay);
 
 productApp.mount('#vue-product-list');
 
-console.log(VueLoading);
