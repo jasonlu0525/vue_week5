@@ -35,7 +35,10 @@
                     </thead>
                     <tbody>
                         <tr v-is="'cart-table'" :prop-shopping-cart="cartsList" @emit-change-qty="$on_changeQty"
-                            @emit-delete-cart="$on_deleteCart"></tr>
+                            @emit-delete-cart="$on_deleteCart">
+                                
+                            <template #final-total> <p>總計 - {{cartsList.final_total}}</p>  </template>
+                        </tr>
 
                     </tbody>
 
@@ -43,7 +46,7 @@
 
             </div>
 
-            <div id="totalPrice" class="">總計 -</div>
+            <div id="totalPrice" class="">總計 - {{cartsList.final_total}} </div>
         </div>
         <div class="col-lg-4">
             <v-form v-slot="{ errors }" @submit="onSubmit">
@@ -93,7 +96,7 @@
                     <span class="d-block pe-2 | cursor-pointer"  @click="$emit('emit-changeQty', { parent:parent ,data: { qty: item.qty-1,product_id:item.id}})">
                         <i class="bi bi-dash"></i>
                     </span>
-                    <input class="col-3 text-center" type="number" readonly :value="item.qty" >
+                    <input class="col-5 text-center" type="number" readonly :value="item.qty" >
                     <span class="d-block ps-2 | cursor-pointer"  @click="$emit('emit-changeQty', { parent:parent ,data: { qty: item.qty+1,product_id:item.id}})">
                         <i class="bi bi-plus"></i>
                     </span>
@@ -103,7 +106,8 @@
         <td class="col-md-1 border-0" @click="$emit('emit-deleteCart',{ parent:parent ,data:{id :item.id ,title:item.product.title }})">
             <span class="cursor-pointer" ><i class="bi bi-x-lg"></i></span></td>
         </tr>
-        <!-- <tr class= "col-12"><teleport to='#totalPrice'> {{finalTotal}}</teleport> </tr> -->
+        <tr class="col-12"> <slot name='final-total'></slot> </tr>
+      
      
       
 </script>
