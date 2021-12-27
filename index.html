@@ -12,6 +12,44 @@
 
 <body>
 
+    <div id="vue-product-list">
+
+
+        <header class="container d-flex justify-content-between position-sticky top-0">
+            <h1>首頁</h1>
+            <ul>
+                <li><a href="#" class="d-block" data-bs-toggle="offcanvas" data-bs-target="#shpping-cart">購物車 <i
+                            class="bi bi-cart-fill"></i></a></li>
+            </ul>
+        </header>
+
+
+
+        <section class="container">
+            <h2>產品</h2>
+
+            <div class="row justify-content-end">
+                <div class=" d-lg-none col-lg-2 d-xl-block">
+                    種類
+                </div>
+
+                <div class="col-lg-10 mb-3">
+                    <ul class="row list-unstyled">
+                        <product-list :prop-product-data="productList" @emit-refresh-carts="$on_refreshShoppingCart">
+                        </product-list>
+                    </ul>
+                    <pagination :prop-pagination="pagination" @emit-change-page="$on_changePages">
+                    </pagination>
+                </div>
+
+            </div>
+
+
+
+            <shopping-cart :prop-shopping-cart="cartsList" @emit-change-qty="$on_changeQty"
+                @emit-delete-cart="$on_deleteCart"></shopping-cart>
+        </section>
+    </div>
 
 
     <script type="text/x-template" id="productList">
@@ -108,54 +146,14 @@
 </script>
 
 
-    <div id="vue-product-list">
-
-
-        <header class="container d-flex justify-content-between position-sticky top-0">
-            <h1>首頁</h1>
-            <ul>
-                <li><a href="#" class="d-block" data-bs-toggle="offcanvas" data-bs-target="#shpping-cart">購物車 <i
-                            class="bi bi-cart-fill"></i></a></li>
-            </ul>
-        </header>
 
 
 
-        <section class="container">
-            <h2>產品</h2>
-
-            <div class="row justify-content-end">
-                <div class=" d-lg-none col-lg-2 d-xl-block">
-                    種類
-                </div>
-
-                <div class="col-lg-10 mb-3">
-                    <ul class="row list-unstyled">
-                        <product-list :prop-product-data="productList" @emit-refresh-carts="$on_refreshShoppingCart">
-                        </product-list>
-                    </ul>
-                    <pagination :prop-pagination="pagination" @emit-change-page="$on_changePages">
-                    </pagination>
-                </div>
-
-            </div>
-
-
-
-            <shopping-cart :prop-shopping-cart="cartsList" @emit-change-qty="$on_changeQty"
-                @emit-delete-cart="$on_deleteCart"></shopping-cart>
-        </section>
-    </div>
-
-
-
-
-    
 
     <script src="https://unpkg.com/vue@3.2.26/dist/vue.global.js"></script>
     <!-- Lastly add this package -->
     <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@5"></script>
-    
+
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"

@@ -41,11 +41,6 @@ const cartApp = createApp({
     data() {
         return {
             vm: this,
-            // errors: [], 
-            user: {
-
-
-            },
             cartsList: [],
         }
     },
@@ -65,14 +60,7 @@ const cartApp = createApp({
     },
     methods: {
         $on_deleteCart,
-        $on_changeQty,
-        onSubmit() {
-            console.log('表單送出');
-        },
-        isPhone(value) {
-            const phoneNumber = /^(09)[0-9]{8}$/
-            return phoneNumber.test(value) ? true : '需要正確的電話號碼'
-        }
+        $on_changeQty
     },
 
 
@@ -87,46 +75,32 @@ cartApp.component('ErrorMessage', VeeValidate.ErrorMessage);
 
 cartApp.component('cart-table', cartComponent)
 
-// cartApp.component('shopping-car-submit-form', {
-//     data() {
-//         return {
+cartApp.component('shopping-car-submit-form', {
+    data() {
+        return {
+            user: {
+                email: '',
+                name: '',
+                address: '',
+                phone: '',
+                county: '',
+            }
+        }
+    },
+    methods: {
+        onSubmit() {
+            console.log(this.user);
+        },
+        isPhone(value) {
+            const phoneNumber = /^(09)[0-9]{8}$/
+            return phoneNumber.test(value) ? true : '需要正確的電話號碼'
+        }
+    },
+    template: '#shopping-car-submit-form',
 
-//             errors: {}
-
-//         }
-//     },
-//     template: '#shopping-car-submit-form',
-
-// })
+})
 
 
 
 
 cartApp.mount("#vue-shpopping-cart");
-
-
-
-// const app = Vue.createApp({
-//     data() {
-//       return {
-//         user: {
-
-//         }
-//       }
-//     },
-//     methods: {
-//       onSubmit() {
-//         console.log('表單送出');
-//       },
-//       isPhone(value) {
-//         const phoneNumber = /^(09)[0-9]{8}$/
-//         return phoneNumber.test(value) ? true : '需要正確的電話號碼'
-//       }
-//     }
-//   });
-
-//   app.component('VForm', VeeValidate.Form);
-//   app.component('VField', VeeValidate.Field);
-//   app.component('ErrorMessage', VeeValidate.ErrorMessage);
-
-//   app.mount('#app')

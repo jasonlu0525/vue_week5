@@ -36,8 +36,10 @@
                     <tbody>
                         <tr v-is="'cart-table'" :prop-shopping-cart="cartsList" @emit-change-qty="$on_changeQty"
                             @emit-delete-cart="$on_deleteCart">
-                                
-                            <template #final-total> <p>總計 - {{cartsList.final_total}}</p>  </template>
+
+                            <template #final-total>
+                                <p>總計 - {{cartsList.final_total}}</p>
+                            </template>
                         </tr>
 
                     </tbody>
@@ -49,29 +51,8 @@
             <div id="totalPrice" class="">總計 - {{cartsList.final_total}} </div>
         </div>
         <div class="col-lg-4">
-            <v-form v-slot="{ errors }" @submit="onSubmit">
-                <v-field id="email" name="信箱" type="email" class="form-control" :class="{ 'is-invalid': errors['信箱'] }"
-                    placeholder="請輸入 Email" rules="email|required" v-model="user.email"></v-field>
-                <error-message name="信箱" class="invalid-feedback"></error-message>
 
-                <v-field id="name" name="地區" class="form-control" :class="{ 'is-invalid': errors['地區'] }"
-                    placeholder="請輸入地區" rules="required" v-model="user.region" as="select">
-                    <option value="">請選擇地區</option>
-                    <option value="台北市">台北市</option>
-                    <option value="高雄市">高雄市</option>
-                </v-field>
-
-                <div class="mb-3">
-                    <label for="address" class="form-label">電話</label>
-                    <v-field id="address" name="電話" type="text" class="form-control"
-                        :class="{ 'is-invalid': errors['電話'] }" placeholder="請輸入電話" :rules="isPhone"
-                        v-model="user.phone"></v-field>
-                    <error-message name="電話" class="invalid-feedback"></error-message>
-                </div>
-
-                <button type="submit">送出</button>
-            </v-form>
-            <!-- <shopping-car-submit-form></shopping-car-submit-form> -->
+            <shopping-car-submit-form></shopping-car-submit-form>
         </div>
     </div>
 
@@ -90,7 +71,7 @@
             </div>
        
         </td>
-        <td class="col-md-2 border-0">NT$ {{item.product.origin_price.toLocaleString()}} 元</td>
+        <td class="col-md-2 border-0">NT$ {{item.product.price.toLocaleString()}} 元</td>
         <td class="col-md-2 border-0"> 
                 <div class="fs-4 d-flex  align-items-center">
                     <span class="d-block pe-2 | cursor-pointer"  @click="$emit('emit-changeQty', { parent:parent ,data: { qty: item.qty-1,product_id:item.id}})">
@@ -102,7 +83,7 @@
                     </span>
               </div> 
         </td>
-        <td class="col-md-2 border-0">NT$ {{item.final_total.toLocaleString()}} 元</td>
+        <td class="col-md-2 border-0"> {{item.final_total.toLocaleString('zh-TW',{style:'currency',currency: 'TWD'})}} 元</td>
         <td class="col-md-1 border-0" @click="$emit('emit-deleteCart',{ parent:parent ,data:{id :item.id ,title:item.product.title }})">
             <span class="cursor-pointer" ><i class="bi bi-x-lg"></i></span></td>
         </tr>
@@ -113,26 +94,49 @@
 </script>
 
 <script type="text/x-template" id="shopping-car-submit-form">
-    <!-- <v-form v-slot="{ errors }" >
-        <v-field id="email" name="email" type="email" class="form-control" :class="{ 'is-invalid': errors['email'] }" placeholder="請輸入 Email" rules="email|required" v-model="user.email"></v-field>
-        <error-message name="email" class="invalid-feedback"></error-message>
-        
-        <v-field id="name" name="地區" class="form-control" :class="{ 'is-invalid': errors['地區'] }"
-              placeholder="請輸入地區" rules="required" v-model="user.region" as="select">
-          <option value="">請選擇地區</option>
-          <option value="台北市">台北市</option>
-          <option value="高雄市">高雄市</option>
-        </v-field>
-  
-        <div class="mb-3">
-          <label for="address" class="form-label">電話</label>
-          <v-field id="address" name="電話" type="text" class="form-control" :class="{ 'is-invalid': errors['電話'] }"
-                   placeholder="請輸入電話" v-model="user.phone"></v-field>
-          <error-message name="電話" class="invalid-feedback"></error-message>
-        </div>
-  
-        <button type="submit">送出</button>
-      </v-form> -->
+    <v-form @submit="onSubmit" v-slot="{errors}">
+        {{errors}}
+         <div class="mb-3">
+           <label for="email" class="form-label">Email</label>
+           <v-field id="email" name="email" type="email" class="form-control" v-model="user.email"
+             :class="{ 'is-invalid' : errors['email']}" rules="email|required" placeholder="請輸入 Email"></v-field>
+           <error-message name="email" class="invalid-feedback"></error-message>
+         </div>
+
+         <div class="mb-3">
+           <label for="name" class="form-label">姓名</label>
+           <v-field id="name" name="姓名" type="text" class="form-control" :class="{ 'is-invalid' : errors['姓名']}" v-model="user.name"
+             rules="required" placeholder="請輸入姓名"></v-field>
+           <error-message name="姓名" class="invalid-feedback"></error-message>
+         </div>
+
+         <div class="mb-3">
+           <label for="phone" class="form-label">電話</label>
+           <v-field id="phone" name="電話" type="text" class="form-control" :class="{ 'is-invalid' : errors['電話']}" v-model="user.phone"
+             :rules="isPhone" placeholder="請輸入電話"></v-field>
+           <error-message name="電話" class="invalid-feedback"></error-message>
+         </div>
+
+         <div class="mb-3">
+           <label for="region" class="form-label">地區</label>
+           <v-field as="select" id="region" name="地區" class="form-control" rules="required" v-model="user.county"
+             :class="{ 'is-invalid' : errors['地區']}">
+             <option value="">請選擇地區</option>
+             <option value="台北市">台北市</option>
+             <option value="高雄市">高雄市</option>
+           </v-field>
+           <error-message name="地區" class="invalid-feedback"></error-message>
+         </div>
+
+         <div class="mb-3">
+           <label for="address" class="form-label">地址</label>
+           <v-field id="address" name="地址" type="text" class="form-control" rules="required" v-model="user.address"
+             :class="{ 'is-invalid' : errors['地址']}" placeholder="請輸入地址"></v-field>
+           <error-message name="地址" class="invalid-feedback"></error-message>
+         </div>
+
+         <button class="btn btn-primary" type="submit">Submit</button>
+       </v-form>
 </script>
 
 
