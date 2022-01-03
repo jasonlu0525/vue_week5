@@ -18,8 +18,8 @@ import {
     cartComponent,
 
     // 刪除模組，用來接收 emit 事件
-    $on_deleteCart,
-    $on_changeQty
+    on_deleteCart,
+    on_changeQty
 } from "./component.esm.js"
 
 
@@ -61,12 +61,8 @@ const cartApp = createApp({
                 console.dir(err)
             });
 
-        const on_deleteCart = $on_deleteCart;
-        const on_changeQty = $on_changeQty;
-        console.log(VueLoading);
-
-
     
+        console.log(VueLoading);
 
         return {
             cartsList,
@@ -104,8 +100,8 @@ const cartApp = createApp({
 
 //     },
 //     methods: {
-//         $on_deleteCart,
-//         $on_changeQty
+//         on_deleteCart,
+//         on_changeQty
 //     },
 
 

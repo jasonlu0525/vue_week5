@@ -30,7 +30,7 @@ const vue_loading_overlay = VueLoading.Plugin;
 
 
 // 購物車 - 刪除單筆資料
-const $on_deleteCart = (deleteMsg, a) => {
+const on_deleteCart = (deleteMsg, a) => {
     console.log(deleteMsg.data.id);
     console.log(a);
     const loader = deleteMsg.parent.appContext.config.globalProperties.$loading.show();
@@ -52,13 +52,13 @@ const $on_deleteCart = (deleteMsg, a) => {
 }
 
 // 購物車 - 修改單筆資料的數量
-const $on_changeQty = (qtyObj) => {
+const on_changeQty = (qtyObj) => {
     console.log(qtyObj);
     if (qtyObj.data.qty === 0) {
         swal('發生錯誤 !', '不能將數字改為 0 ', 'error');
         return;
     }
-    console.log(qtyObj.parent.$loading);
+    console.log(qtyObj.parent);
     const loader = qtyObj.parent.appContext.config.globalProperties.$loading.show();
     putCart(qtyObj.data.product_id, {
             "data": qtyObj.data
@@ -72,8 +72,9 @@ const $on_changeQty = (qtyObj) => {
             console.dir(err);
         })
         .then((result) => {
-            console.log(result);
+            console.log(result, qtyObj.parent.data);
             // 購物車物件抓 this.parent.cartsList
+            //  qtyObj.parent.setupState.cartsList = result.data.data
             qtyObj.parent.data.cartsList = result.data.data
         })
 }
@@ -108,7 +109,7 @@ export {
     cartComponent,
 
     // 工具 funciotn
-    $on_deleteCart, // 刪除購物車
-    $on_changeQty // 修改購物車數量
+    on_deleteCart, // 刪除購物車
+    on_changeQty // 修改購物車數量
 
 }

@@ -18,8 +18,8 @@ import {
 import {
     vue_loading_overlay,
     cartComponent,
-    $on_deleteCart,
-    $on_changeQty
+    on_deleteCart,
+    on_changeQty
 } from "./component.esm.js"
 
 
@@ -84,9 +84,9 @@ const productApp = createApp({
             })
         },
         // 修改購物車數量
-        $on_changeQty,
+        on_changeQty,
         // 刪除單筆資料 (外部引入模組)
-        $on_deleteCart,
+        on_deleteCart,
 
     }
 })

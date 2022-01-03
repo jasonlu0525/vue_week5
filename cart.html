@@ -34,8 +34,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-is="'cart-table'" :prop-shopping-cart="cartsList" @emit-change-qty="$on_changeQty"
-                            @emit-delete-cart="$on_deleteCart">
+                        <tr v-is="'cart-table'" :prop-shopping-cart="cartsList" @emit-change-qty="on_changeQty"
+                            @emit-delete-cart="on_deleteCart">
 
                             <template #final-total>
                                 <p>總計 - {{cartsList.final_total}}</p>
