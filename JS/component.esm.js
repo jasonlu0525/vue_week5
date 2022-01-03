@@ -6,39 +6,33 @@ import {
     deletetAllCart
 } from "./api.esm.js"
 
+import {
+    getCurrentInstance,
+    ref,
+    onMounted,
+    watch
+} from './vendors/vue3/vue.esm-browser.js';
+
+
 
 //啟用 vue-loading-overlay
 
-const  vue_loading_overlay = VueLoading.Plugin;
+const vue_loading_overlay = VueLoading.Plugin;
+
+
 
 
 // 購物車模組，在 cart.html、index.html 皆會使用到
-const cartComponent = {
-    props: ['propShoppingCart'],
-    data() {
-        return {
-            parent: this.$parent,
-            finalTotal: 0
-        }
-    },
-    template: "#shopping-cart",
-    watch: {
-        propShoppingCart() {
-            this.finalTotal = this.propShoppingCart.final_total
-        }
-    },
-    created() {
 
-    },
 
-}
+
 
 // 購物車 - 刪除單筆資料
 const $on_deleteCart = (deleteMsg, a) => {
     console.log(deleteMsg.data.id);
     console.log(a);
-   const loader= deleteMsg.parent.$loading.show();
- 
+    const loader = deleteMsg.parent.appContext.config.globalProperties.$loading.show();
+
     deletetCart(deleteMsg.data.id)
         .then((res) => {
             loader.hide();
@@ -51,7 +45,7 @@ const $on_deleteCart = (deleteMsg, a) => {
         })
         .then((result) => {
             console.log(result);
-            deleteMsg.parent.cartsList = result.data.data
+            deleteMsg.parent.data.cartsList = result.data.data
         })
 }
 
@@ -63,7 +57,7 @@ const $on_changeQty = (qtyObj) => {
         return;
     }
     console.log(qtyObj.parent.$loading);
-    const loader= qtyObj.parent.$loading.show();
+    const loader = qtyObj.parent.appContext.config.globalProperties.$loading.show();
     putCart(qtyObj.data.product_id, {
             "data": qtyObj.data
         }).then((result) => {
@@ -76,9 +70,31 @@ const $on_changeQty = (qtyObj) => {
             console.dir(err);
         })
         .then((result) => {
+            console.log(result);
             // 購物車物件抓 this.parent.cartsList
-            qtyObj.parent.cartsList = result.data.data
+            qtyObj.parent.data.cartsList = result.data.data
         })
+}
+
+
+const cartComponent = {
+    props: ['propShoppingCart'],
+    template: "#shopping-cart",
+    emits: ["emit-change-qty","emit-delete-cart"],
+    setup(props,{ emit }) {
+        const {
+            propShoppingCart
+        } = props;
+        console.log(propShoppingCart);
+        const parent = getCurrentInstance().parent;
+
+
+        return {
+            parent
+            
+        }
+
+    }
 }
 
 

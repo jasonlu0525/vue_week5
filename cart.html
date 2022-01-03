@@ -83,11 +83,11 @@
                     </span>
               </div> 
         </td>
-        <td class="col-md-2 border-0"> {{item.final_total.toLocaleString('zh-TW',{style:'currency',currency: 'TWD'})}} 元</td>
+        <td class="col-md-2 border-0">NT$ {{item.final_total.toLocaleString()}} 元</td>
         <td class="col-md-1 border-0" @click="$emit('emit-deleteCart',{ parent:parent ,data:{id :item.id ,title:item.product.title }})">
             <span class="cursor-pointer" ><i class="bi bi-x-lg"></i></span></td>
         </tr>
-        <tr class="col-12"> <slot name='final-total'></slot> </tr>
+        <tr class="col-12"> <slot name='final-total'>  </slot> </tr>
       
      
       

@@ -1,5 +1,7 @@
 import {
-    createApp
+    createApp,
+    getCurrentInstance,
+    ref
 } from './vendors/vue3/vue.esm-browser.js';
 
 
@@ -42,6 +44,7 @@ const cartApp = createApp({
         return {
             vm: this,
             cartsList: [],
+            user: {}
         }
     },
     created() {
@@ -76,31 +79,59 @@ cartApp.component('ErrorMessage', VeeValidate.ErrorMessage);
 cartApp.component('cart-table', cartComponent)
 
 cartApp.component('shopping-car-submit-form', {
-    data() {
-        return {
-            user: {
-                email: '',
-                name: '',
-                address: '',
-                phone: '',
-                county: '',
-            }
+    template: '#shopping-car-submit-form',
+    setup(props) {
+
+        const user = ref({
+            email: '',
+            name: '',
+            address: '',
+            phone: '',
+            county: '',
+        })
+
+        function onSubmit() {
+            console.log(user);
         }
-    },
-    methods: {
-        onSubmit() {
-            console.log(this.user);
-        },
-        isPhone(value) {
+
+        function isPhone(value) {
             const phoneNumber = /^(09)[0-9]{8}$/
             return phoneNumber.test(value) ? true : '需要正確的電話號碼'
         }
-    },
-    template: '#shopping-car-submit-form',
 
+        return {
+            user,
+            onSubmit,
+            isPhone
+        }
+    }
 })
 
+// cartApp.component('shopping-car-submit-form', {
 
+//     data() {
+//         return {
+//             user: {
+//                 email: '',
+//                 name: '',
+//                 address: '',
+//                 phone: '',
+//                 county: '',
+//             }
+//         }
+//     },
+//     methods: {
+//         onSubmit() {
+//             console.log(this.user);
+//         },
+//         isPhone(value) {
+//             const phoneNumber = /^(09)[0-9]{8}$/
+//             return phoneNumber.test(value) ? true : '需要正確的電話號碼'
+//         }
+//     },
+//     template: '#shopping-car-submit-form',
+
+// })
 
 
 cartApp.mount("#vue-shpopping-cart");
