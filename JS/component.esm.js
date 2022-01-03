@@ -10,8 +10,10 @@ import {
     getCurrentInstance,
     ref,
     onMounted,
+    inject,
     watch
 } from './vendors/vue3/vue.esm-browser.js';
+
 
 
 
@@ -80,18 +82,18 @@ const $on_changeQty = (qtyObj) => {
 const cartComponent = {
     props: ['propShoppingCart'],
     template: "#shopping-cart",
-    emits: ["emit-change-qty","emit-delete-cart"],
-    setup(props,{ emit }) {
+    emits: ["emit-change-qty", "emit-delete-cart"],
+    setup(props, {
+        emit
+    }) {
         const {
             propShoppingCart
         } = props;
         console.log(propShoppingCart);
         const parent = getCurrentInstance().parent;
 
-
         return {
             parent
-            
         }
 
     }

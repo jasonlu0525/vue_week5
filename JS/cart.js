@@ -23,6 +23,7 @@ import {
 } from "./component.esm.js"
 
 
+
 Object.keys(VeeValidateRules).forEach(rule => {
     if (rule !== 'default') {
         VeeValidate.defineRule(rule, VeeValidateRules[rule]);
@@ -40,34 +41,77 @@ VeeValidate.configure({
 
 const cartApp = createApp({
 
-    data() {
-        return {
-            vm: this,
-            cartsList: [],
-            user: {}
-        }
-    },
-    created() {
+    setup() {
+        const cartsList = ref([]);
+        const user = ref({
+            email: "",
+            name: "",
+            phone: "",
+            county: "",
+            address: ""
+        });
+
         console.log(VueLoading);
         getCart()
             .then((result) => {
 
-                this.cartsList = result.data.data;
-
-                console.log(this.cartLists);
+                cartsList.value = result.data.data;
 
             }).catch((err) => {
                 console.dir(err)
             });
 
-    },
-    methods: {
-        $on_deleteCart,
-        $on_changeQty
-    },
+        const on_deleteCart = $on_deleteCart;
+        const on_changeQty = $on_changeQty;
+        console.log(VueLoading);
 
+
+    
+
+        return {
+            cartsList,
+            user,
+            on_deleteCart,
+            on_changeQty
+
+        }
+    }
 
 });
+
+
+// const cartApp = createApp({
+
+//     data() {
+//         return {
+//             vm: this,
+//             cartsList: [],
+//             user: {}
+//         }
+//     },
+//     created() {
+//         console.log(VueLoading);
+//         getCart()
+//             .then((result) => {
+
+//                 this.cartsList = result.data.data;
+
+//                 console.log(this.cartLists);
+
+//             }).catch((err) => {
+//                 console.dir(err)
+//             });
+
+//     },
+//     methods: {
+//         $on_deleteCart,
+//         $on_changeQty
+//     },
+
+
+// });
+
+
 
 
 cartApp.use(vue_loading_overlay);
