@@ -2,66 +2,67 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@4.0.2/dist/vue-loading.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@4.0.2/dist/vue-loading.css">
 
-    <link rel="stylesheet" href="./css/all.min.css">
-    <title>Document</title>
+  <link rel="stylesheet" href="./css/all.min.css">
+  <title>Document</title>
 </head>
 
 
+<body>
 
 
 
-<div class="container" id="vue-shpopping-cart">
+  <div class="container" id="vue-shpopping-cart">
 
     <div class="row justify-content-center">
-        <h1 class="text-center mb-3">我的購物車</h1>
-        <div class="col-lg-8 mb-4">
+      <h1 class="text-center mb-3">我的購物車</h1>
+      <div class="col-lg-8 mb-4">
 
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr class="row g-0 d-none d-md-flex">
-                            <th scope="col" class="col-5">品項</th>
-                            <th scope="col" class="col-2">單價</th>
-                            <th scope="col" class="col-2">數量</th>
-                            <th scope="col" class="col-2">金額</th>
-                            <th scope="col" class="col-1"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-is="'cart-table'" :prop-shopping-cart="cartsList" @emit-change-qty="on_changeQty"
-                            @emit-delete-cart="on_deleteCart">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr class="row g-0 d-none d-md-flex">
+                <th scope="col" class="col-5">品項</th>
+                <th scope="col" class="col-2">單價</th>
+                <th scope="col" class="col-2">數量</th>
+                <th scope="col" class="col-2">金額</th>
+                <th scope="col" class="col-1"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-is="'cart-table'" :prop-shopping-cart="cartsList" @emit-change-qty="on_changeQty"
+                @emit-delete-cart="on_deleteCart">
 
-                            <template #final-total>
-                                <p>總計 - {{cartsList.final_total}}</p>
-                            </template>
-                        </tr>
+                <template #final-total>
+                  <p>總計 - {{cartsList.final_total}}</p>
+                </template>
+              </tr>
 
-                    </tbody>
+            </tbody>
 
-                </table>
+          </table>
 
-            </div>
-
-            <div id="totalPrice" class="">總計 - {{cartsList.final_total}} </div>
         </div>
-        <div class="col-lg-4">
 
-            <shopping-car-submit-form></shopping-car-submit-form>
-        </div>
+        <div id="totalPrice" class="">總計 - {{cartsList.final_total}} </div>
+      </div>
+      <div class="col-lg-4">
+
+        <shopping-car-submit-form></shopping-car-submit-form>
+      </div>
     </div>
 
 
 
 
-</div>
+  </div>
 
-<script type="text/x-template" id="shopping-cart">
+  <script type="text/x-template" id="shopping-cart">
 
     <tr v-for="(item, index) in propShoppingCart.carts" :key="index" class="row g-0 align-items-center">
         <td  class="col-md-5 border-0">
@@ -93,7 +94,7 @@
       
 </script>
 
-<script type="text/x-template" id="shopping-car-submit-form">
+  <script type="text/x-template" id="shopping-car-submit-form">
     <v-form @submit="onSubmit" v-slot="{errors}">
         {{errors}}
          <div class="mb-3">
@@ -140,23 +141,23 @@
 </script>
 
 
-<script src="https://unpkg.com/vue@3.2.26/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/vue@3.2.26/dist/vue.global.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@5"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/4.1.17/vee-validate.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@vee-validate/i18n@4.1.17/dist/vee-validate-i18n.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@vee-validate/rules@4.1.17/dist/vee-validate-rules.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/4.1.17/vee-validate.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@vee-validate/i18n@4.1.17/dist/vee-validate-i18n.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@vee-validate/rules@4.1.17/dist/vee-validate-rules.min.js"></script>
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"
     integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<script src="./JS/vendors/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="./JS/vendors/bootstrap/bootstrap.bundle.min.js"></script>
 
-<script src="./JS/cart.js" type="module"></script>
+  <script src="./JS/cart.js" type="module"></script>
 </body>
 
 </html>

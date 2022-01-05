@@ -6,14 +6,15 @@ import {
     deletetAllCart
 } from "./api.esm.js"
 
-import {
+
+const {
     getCurrentInstance,
     ref,
     onMounted,
     inject,
-    watch
-} from './vendors/vue3/vue.esm-browser.js';
-
+    watch,
+    toRef
+} = Vue;
 
 
 
@@ -72,10 +73,11 @@ const on_changeQty = (qtyObj) => {
             console.dir(err);
         })
         .then((result) => {
-            console.log(result, qtyObj.parent.data);
+            console.log(result, qtyObj.parent);
             // 購物車物件抓 this.parent.cartsList
-            //  qtyObj.parent.setupState.cartsList = result.data.data
-            qtyObj.parent.data.cartsList = result.data.data
+            console.log(qtyObj.parent.setupState);
+                qtyObj.parent.setupState.cartsList = result.data.data
+            // qtyObj.parent.data.cartsList = result.data.data
         })
 }
 
@@ -87,11 +89,13 @@ const cartComponent = {
     setup(props, {
         emit
     }) {
-        const {
-            propShoppingCart
-        } = props;
-        console.log(propShoppingCart);
+        // const {
+        //     propShoppingCart
+        // } = props;
+
         const parent = getCurrentInstance().parent;
+
+console.log(parent);
 
         return {
             parent

@@ -1,6 +1,6 @@
-import {
-    createApp
-} from './vendors/vue3/vue.esm-browser.js';
+// import {
+//     createApp
+// } from './vendors/vue3/vue.esm-browser.js';
 
 
 import {
@@ -25,7 +25,7 @@ import {
 
 
 
-const productApp = createApp({
+const productApp = Vue.createApp({
     data() {
         return {
             productList: [],

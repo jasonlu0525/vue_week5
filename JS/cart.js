@@ -1,7 +1,7 @@
-import {
-    createApp,
+ import {
+   //  createApp,
     getCurrentInstance,
-    ref
+     ref
 } from './vendors/vue3/vue.esm-browser.js';
 
 
@@ -39,7 +39,7 @@ VeeValidate.configure({
     validateOnInput: true, // 調整為輸入字元立即進行驗證
 });
 
-const cartApp = createApp({
+const cartApp =Vue.createApp({
 
     setup() {
         const cartsList = ref([]);
@@ -61,7 +61,6 @@ const cartApp = createApp({
                 console.dir(err)
             });
 
-    
         console.log(VueLoading);
 
         return {
@@ -76,7 +75,7 @@ const cartApp = createApp({
 });
 
 
-// const cartApp = createApp({
+// const cartApp = Vue.createApp({
 
 //     data() {
 //         return {
