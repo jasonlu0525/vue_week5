@@ -9,11 +9,6 @@ import {
 
 const {
     getCurrentInstance,
-    ref,
-    onMounted,
-    inject,
-    watch,
-    toRef
 } = Vue;
 
 
@@ -48,7 +43,8 @@ const on_deleteCart = (deleteMsg, a) => {
         })
         .then((result) => {
             console.log(result);
-            deleteMsg.parent.data.cartsList = result.data.data
+            console.log(deleteMsg.parent);
+            deleteMsg.parent.setupState.cartsList = result.data.data
         })
 }
 
@@ -76,7 +72,7 @@ const on_changeQty = (qtyObj) => {
             console.log(result, qtyObj.parent);
             // 購物車物件抓 this.parent.cartsList
             console.log(qtyObj.parent.setupState);
-                qtyObj.parent.setupState.cartsList = result.data.data
+            qtyObj.parent.setupState.cartsList = result.data.data
             // qtyObj.parent.data.cartsList = result.data.data
         })
 }
@@ -84,21 +80,27 @@ const on_changeQty = (qtyObj) => {
 
 const cartComponent = {
     props: ['propShoppingCart'],
+    emits: ["emit-changeQty", "emit-deleteCart","emit-change-qty","emit-delete-cart"],
     template: "#shopping-cart",
-    emits: ["emit-change-qty", "emit-delete-cart"],
+
     setup(props, {
-        emit
+   
     }) {
-        // const {
-        //     propShoppingCart
-        // } = props;
+        const {
+            propShoppingCart
+        } = props;
+
+console.log(propShoppingCart);
 
         const parent = getCurrentInstance().parent;
 
-console.log(parent);
+        console.log(parent);
+
+
 
         return {
-            parent
+            parent,
+     
         }
 
     }

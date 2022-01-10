@@ -35,10 +35,10 @@
 
                 <div class="col-lg-10 mb-3">
                     <ul class="row list-unstyled">
-                        <product-list :prop-product-data="productList" @emit-refresh-carts="$on_refreshShoppingCart">
+                        <product-list :prop-product-data="productList" @emit-refresh-carts="on_refreshShoppingCart">
                         </product-list>
                     </ul>
-                    <pagination :prop-pagination="pagination" @emit-change-page="$on_changePages">
+                    <pagination :prop-pagination="pagination" @emit-change-page="on_changePages">
                     </pagination>
                 </div>
 
@@ -46,8 +46,8 @@
 
 
 
-            <shopping-cart :prop-shopping-cart="cartsList" @emit-change-qty="On_changeQty"
-                @emit-delete-cart="On_deleteCart"></shopping-cart>
+            <shopping-cart :prop-shopping-cart="cartsList" @emit-change-qty="on_changeQty"
+                @emit-delete-cart="on_deleteCart"></shopping-cart>
         </section>
     </div>
 
@@ -71,11 +71,12 @@
                 <p class="card-text">{{item.description}}</p>
                 <p>原價 :<del> {{item.origin_price.toLocaleString()}}元</del>/{{item.unit}}</p>
                 <p>特價 : {{item.price.toLocaleString()}}元/{{item.unit}}</p>
+                <div class="row">
+                    <div class="col-6"> <a href="#" class=" w-100 btn btn-primary stretcked-link" @click.prevent="addToCart( { product_id :item.id,qty:1,item})">加入購物車</a></div>
+                 
+                </div>
             </div>
-            <div class="row">
-                <div class="col-6"> <a href="#" class=" w-100 btn btn-primary stretcked-link" @click.prevent="addToCart( { product_id :item.id,qty:1,item})">加入購物車</a></div>
-             
-            </div>
+        
         </div>
         </li>
 

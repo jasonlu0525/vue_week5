@@ -1,7 +1,9 @@
-// import {
-//     createApp
-// } from './vendors/vue3/vue.esm-browser.js';
 
+
+const {
+    ref,
+    getCurrentInstance
+} = Vue
 
 import {
     // 產品
@@ -9,9 +11,7 @@ import {
     // 購物車
     getCart,
     postCart,
-    putCart,
-    deletetAllCart,
-    deletetCart
+
 } from "./api.esm.js";
 
 
@@ -25,27 +25,89 @@ import {
 
 
 
+// const productApp = Vue.createApp({
+//     data() {
+//         return {
+//             productList: [],
+//             pagination: [],
+//             cartsList: [],
+
+//         }
+//     },
+
+//     created() {
+
+//         console.log(VueLoading);
+//          const loader=   this.$loading.show();
+
+//         // 取得產品 ( 預設是取第一頁 )
+//         getProduct().then((result) => {
+//             // 頁碼 物件
+//             loader.hide();
+//             this.pagination = result.data.pagination;
+//             this.productList = result.data.products
+//             console.log(result);
+//         }).catch((err) => {
+//             console.dir(err);
+//         })
+
+//         // 取得購物車 
+//         getCart().then((result) => {
+//             this.cartsList = result.data.data
+//             console.log(result);
+//         }).catch((err) => {
+//             console.dir(err);
+//         })
+//     },
+//     methods: {
+
+//         // 觸發換頁
+//         $on_changePages(pages) {
+//             console.log(pages);
+//             getProduct(pages).then((result) => {
+
+//                 this.pagination = result.data.pagination;
+//                 this.productList = result.data.products
+//                 console.log(result);
+//             }).catch((err) => {
+//                 console.dir(err);
+//             })
+//         },
+//         // 加入購物車之後 更新 this.cartsList，並且把更新後的 this.cartsList 資料以 props 傳入 shopping-cart 元件
+//         $on_refreshShoppingCart(newData) {
+//             console.log(newData);
+//             getCart().then((result) => {
+//                 this.cartsList = result.data.data
+//                 console.log(result);
+//             }).catch((err) => {
+//                 console.dir(err);
+//             })
+//         },
+//         // 修改購物車數量
+//         on_changeQty,
+//         // 刪除單筆資料 (外部引入模組)
+//         on_deleteCart,
+
+//     }
+// })
+
 const productApp = Vue.createApp({
-    data() {
-        return {
-            productList: [],
-            pagination: [],
-            cartsList: [],
+  //  emits:['emit-refresh-carts'],
+    setup(props) {
 
-        }
-    },
+        const productList = ref([]);
+        const pagination = ref([]);
+        const cartsList = ref([]);
 
-    created() {
-       
-        console.log(VueLoading);
-         const loader=   this.$loading.show();
+  
+      const loader =  getCurrentInstance().appContext.config.globalProperties.$loading.show();
 
         // 取得產品 ( 預設是取第一頁 )
         getProduct().then((result) => {
             // 頁碼 物件
-            loader.hide();
-            this.pagination = result.data.pagination;
-            this.productList = result.data.products
+        loader.hide();
+            pagination.value = result.data.pagination;
+            productList.value = result.data.products
             console.log(result);
         }).catch((err) => {
             console.dir(err);
@@ -53,42 +115,50 @@ const productApp = Vue.createApp({
 
         // 取得購物車 
         getCart().then((result) => {
-            this.cartsList = result.data.data
+           cartsList.value = result.data.data
             console.log(result);
         }).catch((err) => {
             console.dir(err);
         })
-    },
-    methods: {
 
         // 觸發換頁
-        $on_changePages(pages) {
+        function on_changePages(pages) {
             console.log(pages);
             getProduct(pages).then((result) => {
 
-                this.pagination = result.data.pagination;
-                this.productList = result.data.products
+                pagination.value = result.data.pagination;
+                productList.value = result.data.products
                 console.log(result);
             }).catch((err) => {
                 console.dir(err);
             })
-        },
+        }
         // 加入購物車之後 更新 this.cartsList，並且把更新後的 this.cartsList 資料以 props 傳入 shopping-cart 元件
-        $on_refreshShoppingCart(newData) {
+        function on_refreshShoppingCart(newData) {
             console.log(newData);
             getCart().then((result) => {
-                this.cartsList = result.data.data
+                cartsList.value = result.data.data
                 console.log(result);
             }).catch((err) => {
                 console.dir(err);
             })
-        },
+        }
         // 修改購物車數量
-        on_changeQty,
-        // 刪除單筆資料 (外部引入模組)
-        on_deleteCart,
+
+
+        return {
+            productList,
+            pagination,
+            cartsList,
+            on_changePages,
+            on_refreshShoppingCart,
+            on_changeQty,
+            // 刪除單筆資料 (外部引入模組)
+            on_deleteCart,
+        }
 
     }
+
 })
 
 
@@ -99,6 +169,7 @@ const productApp = Vue.createApp({
 // 購物清單
 productApp.component('product-list', {
     props: ['propProductData'],
+    emits:['emit-refresh-carts'],
     data() {
         return {
 
@@ -114,7 +185,7 @@ productApp.component('product-list', {
                 .then((res) => {
                     console.log(res);
 
-                    this.$emit('emit-refresh-carts'); // 加入購物車之後觸發 emit，傳到 ROOT 執行  $on_refreshShoppingCart()
+                    this.$emit('emit-refresh-carts'); // 加入購物車之後觸發 emit，傳到 ROOT 執行  on_refreshShoppingCart()
                     swal("感謝您 ", `${res.data.message}，目前購物車內已有 ${res.data.data.qty} 件該產品`, 'success')
                     console.log("成功加入購物車 !", res);
                 })
@@ -162,4 +233,3 @@ productApp.component('shopping-cart', cartComponent)
 productApp.use(vue_loading_overlay);
 
 productApp.mount('#vue-product-list');
-

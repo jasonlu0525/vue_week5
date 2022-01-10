@@ -39,7 +39,7 @@
                 @emit-delete-cart="on_deleteCart">
 
                 <template #final-total>
-                  <p>總計 - {{cartsList.final_total}}</p>
+                  <p>總計 - {{cartsList.final_total || 0 }} 元</p>
                 </template>
               </tr>
 
@@ -49,11 +49,12 @@
 
         </div>
 
-        <div id="totalPrice" class="">總計 - {{cartsList.final_total}} </div>
+        <!-- <div id="totalPrice" class="">總計 - {{cartsList.final_total}} </div> -->
       </div>
       <div class="col-lg-4">
 
-        <shopping-car-submit-form></shopping-car-submit-form>
+        <shopping-car-submit-form @emit-clear-cart="on_clear_cart" :prop-cart-data="cartsList">
+        </shopping-car-submit-form>
       </div>
     </div>
 
@@ -64,39 +65,48 @@
 
   <script type="text/x-template" id="shopping-cart">
 
-    <tr v-for="(item, index) in propShoppingCart.carts" :key="index" class="row g-0 align-items-center">
-        <td  class="col-md-5 border-0">
-            <div class="d-flex align-items-center">
-                <img   class="col-6" :src="item.product.imageUrl" alt="">
-                <h3 class=" ms-2 fs-4 mb-0">{{item.product.title}}</h3>
-            </div>
-       
-        </td>
-        <td class="col-md-2 border-0">NT$ {{item.product.price.toLocaleString()}} 元</td>
-        <td class="col-md-2 border-0"> 
-                <div class="fs-4 d-flex  align-items-center">
-                    <span class="d-block pe-2 | cursor-pointer"  @click="$emit('emit-changeQty', { parent:parent ,data: { qty: item.qty-1,product_id:item.id}})">
-                        <i class="bi bi-dash"></i>
-                    </span>
-                    <input class="col-5 text-center" type="number" readonly :value="item.qty" >
-                    <span class="d-block ps-2 | cursor-pointer"  @click="$emit('emit-changeQty', { parent:parent ,data: { qty: item.qty+1,product_id:item.id}})">
-                        <i class="bi bi-plus"></i>
-                    </span>
-              </div> 
-        </td>
-        <td class="col-md-2 border-0">NT$ {{item.final_total.toLocaleString()}} 元</td>
-        <td class="col-md-1 border-0" @click="$emit('emit-deleteCart',{ parent:parent ,data:{id :item.id ,title:item.product.title }})">
-            <span class="cursor-pointer" ><i class="bi bi-x-lg"></i></span></td>
-        </tr>
-        <tr class="col-12"> <slot name='final-total'>  </slot> </tr>
-      
-     
+
+    <template  v-if="propShoppingCart.carts.length>0">
+  <tr v-for="(item, index) in propShoppingCart.carts" :key="index" class="row g-0 align-items-center" >
+    <td  class="col-md-5 border-0">
+        <div class="d-flex align-items-center">
+            <img   class="col-6" :src="item.product.imageUrl" alt="">
+            <h3 class=" ms-2 fs-4 mb-0">{{item.product.title}}</h3>
+        </div>
+   
+    </td>
+    <td class="col-md-2 border-0">NT$ {{item.product.price.toLocaleString()}} 元</td>
+    <td class="col-md-2 border-0"> 
+            <div class="fs-4 d-flex  align-items-center">
+                <span class="d-block pe-2 | cursor-pointer"  
+                @click="$emit('emit-changeQty', { parent:parent ,data: { qty: item.qty-1,product_id:item.id}})"
+                :class="{ 'cursor-not-allowed' : item.qty-1 == 0 }">
+                    <i class="bi bi-dash"></i>
+                </span>
+                <input class="col-5 text-center" type="number" readonly :value="item.qty" >
+                <span class="d-block ps-2 | cursor-pointer"  @click="$emit('emit-changeQty', { parent:parent ,data: { qty: item.qty+1,product_id:item.id}})">
+                    <i class="bi bi-plus"></i>
+                </span>
+          </div> 
+    </td>
+    <td class="col-md-2 border-0">NT$ {{item.final_total.toLocaleString()}} 元</td>
+    <td class="col-md-1 border-0" @click="$emit('emit-deleteCart',{ parent:parent ,data:{id :item.id ,title:item.product.title }})">
+        <span class="cursor-pointer" ><i class="bi bi-x-lg"></i></span></td>
+    </tr>
+    <tr class="col-12"></tr>
+</template>
+
+<template v-else>
+
+    <h2  class="text-danger text-center py-5">尚無資料</h2>
+  
+</template>
+    
       
 </script>
 
   <script type="text/x-template" id="shopping-car-submit-form">
-    <v-form @submit="onSubmit" v-slot="{errors}">
-        {{errors}}
+    <v-form @submit="onSubmit" v-slot="{errors}" >
          <div class="mb-3">
            <label for="email" class="form-label">Email</label>
            <v-field id="email" name="email" type="email" class="form-control" v-model="user.email"
@@ -113,22 +123,12 @@
 
          <div class="mb-3">
            <label for="phone" class="form-label">電話</label>
-           <v-field id="phone" name="電話" type="text" class="form-control" :class="{ 'is-invalid' : errors['電話']}" v-model="user.phone"
+           <v-field id="phone" name="電話" type="text" class="form-control" :class="{ 'is-invalid' : errors['電話']}" v-model="user.tel"
              :rules="isPhone" placeholder="請輸入電話"></v-field>
            <error-message name="電話" class="invalid-feedback"></error-message>
          </div>
 
-         <div class="mb-3">
-           <label for="region" class="form-label">地區</label>
-           <v-field as="select" id="region" name="地區" class="form-control" rules="required" v-model="user.county"
-             :class="{ 'is-invalid' : errors['地區']}">
-             <option value="">請選擇地區</option>
-             <option value="台北市">台北市</option>
-             <option value="高雄市">高雄市</option>
-           </v-field>
-           <error-message name="地區" class="invalid-feedback"></error-message>
-         </div>
-
+        
          <div class="mb-3">
            <label for="address" class="form-label">地址</label>
            <v-field id="address" name="地址" type="text" class="form-control" rules="required" v-model="user.address"
@@ -136,7 +136,14 @@
            <error-message name="地址" class="invalid-feedback"></error-message>
          </div>
 
-         <button class="btn btn-primary" type="submit">Submit</button>
+         <div class="mb-3">
+          <label for="message" class="form-label">留言</label>
+          <v-field id="message" name="留言" type="text" class="form-control" rules="required" v-model="message"
+            :class="{ 'is-invalid' : errors['留言']}" placeholder="請輸入留言" as="textarea"></v-field>
+          <error-message name="留言" class="invalid-feedback"></error-message>
+        </div>
+
+         <button class="btn btn-primary" type="submit" >送出訂單</button>
        </v-form>
 </script>
 
