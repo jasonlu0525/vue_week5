@@ -15,7 +15,7 @@
     <div id="vue-product-list">
 
 
-        <header class="container d-flex justify-content-between position-sticky top-0">
+        <header class="container d-flex justify-content-between position-sticky top-0 bg-white">
             <h1>首頁</h1>
             <ul>
                 <li><a href="#" class="d-block" data-bs-toggle="offcanvas" data-bs-target="#shpping-cart">購物車 <i
@@ -54,15 +54,15 @@
 
     <script type="text/x-template" id="productList">
 
+        <detail-modal ref="detailModal" ></detail-modal>
+       
+        
         <li class="col-md-6 col-lg-4  mb-3 p-3" v-for="(item, index) in productData" :key="index">
 
         <div class="card">
             <div class="card-hover">
                 <img :src="item.imageUrl" class="card-img card-img-top" :alt="item.description">
-                <div class="card-img-overlay card--hover d-flex justify-content-center align-items-center">
-                    <h5 class="card-title text-center ">查看更多</h5>
-                   
-                </div>
+             
         
             </div>
         
@@ -73,13 +73,13 @@
                 <p>特價 : {{item.price.toLocaleString()}}元/{{item.unit}}</p>
                 <div class="row">
                     <div class="col-6"> <a href="#" class=" w-100 btn btn-primary stretcked-link" @click.prevent="addToCart( { product_id :item.id,qty:1,item})">加入購物車</a></div>
-                 
+                    <div class="col-6"> <a href="#" class=" w-100 btn btn-secondary stretcked-link" @click.prevent="$refs.detailModal.detailModal.show(),$refs.detailModal.singleProductData=item">了解更多</a></div>
                 </div>
             </div>
         
         </div>
         </li>
-
+     
 </script>
 
     <script type="text/x-template" id="pagination">
@@ -167,3 +167,5 @@
 </body>
 
 </html>
+
+

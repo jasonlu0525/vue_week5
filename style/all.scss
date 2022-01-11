@@ -1,61 +1,9 @@
 @import "./venders/bootstrap/bootstrap";
+@import "./base/reset";
+@import "./components/_offcanvas";
+
 
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css");
 
-a {
-    color: inherit;
-}
 
-img {
-    max-width: 100%;
-    height: auto;
-}
 
-.card-hover {
-    position: relative;
-
-    z-index: 999;
-
-    cursor: pointer;
-    color: white;
-
-}
-
-.card--hover {
-    visibility: hidden;
-    transform: translatY(-50%);
-}
-
-.card--hover:hover {
-    transform: translatY(50%);
-    visibility: visible;
-
-    &::after {
-        content: '';
-        position: absolute;
-
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: black;
-        opacity: .5;
-    }
-
-}
-
-.off-canvas-scrollbar {
-   
-    &::-webkit-scrollbar {
-        width:10px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background-color: red;
-        border-radius: 10px
-    }
-    &::-webkit-scrollbar-track{
-        background-color: white;
-      
-    }
-}

@@ -12095,36 +12095,6 @@ img {
   height: auto;
 }
 
-.card-hover {
-  position: relative;
-  z-index: 999;
-  cursor: pointer;
-  color: white;
-}
-
-.card--hover {
-  visibility: hidden;
-  -webkit-transform: translatY(-50%);
-          transform: translatY(-50%);
-}
-
-.card--hover:hover {
-  -webkit-transform: translatY(50%);
-          transform: translatY(50%);
-  visibility: visible;
-}
-
-.card--hover:hover::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: black;
-  opacity: .5;
-}
-
 .off-canvas-scrollbar::-webkit-scrollbar {
   width: 10px;
 }
