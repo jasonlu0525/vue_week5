@@ -5,7 +5,6 @@ const {
 
 import {
     getCart,
-    //   postCart,
     postPayMent
 } from "./api.esm.js"
 
@@ -41,8 +40,6 @@ const cartApp = Vue.createApp({
 
     setup() {
         const cartsList = ref([]);
-
-
         const loader = getCurrentInstance().appContext.config.globalProperties.$loading.show();
 
         getCart()
@@ -86,12 +83,6 @@ cartApp.component('shopping-car-submit-form', {
     setup(props, {
         emit
     }) {
-        const {
-            propCartData
-        } = props;
-
-        console.log(propCartData);
-
         const user = ref({
             email: '',
             name: '',
@@ -109,11 +100,7 @@ cartApp.component('shopping-car-submit-form', {
             resetForm
         }) {
 
-
             const loader = current.$loading.show();
-
-
-
 
             postPayMent({
                     data: {
@@ -131,7 +118,7 @@ cartApp.component('shopping-car-submit-form', {
                 })
                 .catch((err) => {
                     console.dir(err);
-                    loader.hide();
+    
                     swal(`${err.response.data.message}`, ``, 'error');
                 }).then(() => {
                     loader.hide();
@@ -147,7 +134,6 @@ cartApp.component('shopping-car-submit-form', {
         }
 
         return {
-            propCartData,
             user,
             message,
             onSubmit,

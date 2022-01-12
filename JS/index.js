@@ -225,12 +225,11 @@ const detailModal = {
 
 };
 
-
-
 // 購物清單
 productApp.component('product-list', {
     props: ['propProductData'],
     emits: ['emit-refresh-carts'],
+    template: '#productList',
     components: {
         detailModal
     },
@@ -261,22 +260,11 @@ productApp.component('product-list', {
 
         }
     },
-    template: '#productList',
-
     watch: {
         propProductData() {
             this.productData = [...this.propProductData]
         }
     },
-
-    // updated() {
-    //     this.productData = [...this.propProductData]
-
-    // }
-    mounted() {
-        console.log(this.$refs.detailModal);
-    },
-
 })
 
 // 頁碼

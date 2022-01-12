@@ -38,9 +38,7 @@
               <tr v-is="'cart-table'" :prop-shopping-cart="cartsList" @emit-change-qty="on_changeQty"
                 @emit-delete-cart="on_deleteCart">
 
-                <template #final-total>
-                  <p>總計 - {{cartsList.final_total || 0 }} 元</p>
-                </template>
+        
               </tr>
 
             </tbody>
@@ -66,7 +64,7 @@
   <script type="text/x-template" id="shopping-cart">
 
 
-    <template  v-if="propShoppingCart.carts.length>0">
+    <template  v-if="propShoppingCart.hasOwnProperty('carts')  && propShoppingCart.carts.length>0">
   <tr v-for="(item, index) in propShoppingCart.carts" :key="index" class="row g-0 align-items-center" >
     <td  class="col-md-5 border-0">
         <div class="d-flex align-items-center">
@@ -93,7 +91,7 @@
     <td class="col-md-1 border-0" @click="$emit('emit-deleteCart',{ parent:parent ,data:{id :item.id ,title:item.product.title }})">
         <span class="cursor-pointer" ><i class="bi bi-x-lg"></i></span></td>
     </tr>
-    <tr class="col-12"></tr>
+
 </template>
 
 <template v-else>
